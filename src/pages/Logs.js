@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
@@ -10,46 +10,25 @@ import {
 } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import { useNavigate } from "@reach/router";
-
-const useStyles = makeStyles({
-  cardRoot: {},
-  chips: {
-    display: "flex",
-    gap: "2px",
-    marginTop: "10px",
-  },
-});
+import { useDispatch, useSelector } from "react-redux";
+import { getLogs } from "../store/logsSlice";
+import LogItem from "../components/LogItem";
 
 const Logs = () => {
-  const classes = useStyles();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { logList } = useSelector((state) => state.logs);
+
+  useEffect(() => {
+    dispatch(getLogs());
+  }, [dispatch]);
+
   return (
     <div>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} lg={4}>
-          <Card className={classes.cardRoot} variant="outlined">
-            <CardActionArea
-              onClick={(ev) => {
-                navigate(`/request`);
-              }}
-            >
-              <CardContent>
-                <Typography color="textSecondary" gutterBottom>
-                  Subtitulo
-                </Typography>
-                <Typography variant="h5">Titulo perron</Typography>
-                <Box className={classes.chips}>
-                  <Chip
-                    clickable
-                    label="Categoria 1"
-                    size="small"
-                    variant="outlined"
-                  />
-                  <Chip label="Categoria 2" size="small" variant="outlined" />
-                </Box>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+          {logList.map((el, index) => (
+            <LogItem log={el} key={index} />
+          ))}
         </Grid>
       </Grid>
     </div>
