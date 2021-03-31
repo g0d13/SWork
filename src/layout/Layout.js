@@ -66,7 +66,11 @@ const Layout = (props) => {
           <Typography variant="h6" className={classes.title}>
             Inicio
           </Typography>
-          <IconButton aria-label="show 17 new notifications" color="inherit">
+          <IconButton
+            aria-label="show 17 new notifications"
+            color="inherit"
+            onClick={() => navigateTo("/notifications")}
+          >
             <Badge badgeContent={17} color="secondary">
               <Notifications />
             </Badge>
