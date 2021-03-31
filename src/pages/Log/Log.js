@@ -12,8 +12,10 @@ import { Add } from "@material-ui/icons";
 const useStyles = makeStyles({
   inputWith: {
     width: "100%",
-    marginTop: "10px",
-    marginBottom: "10px",
+  },
+  button: {
+    display: "flex",
+    justifyContent: "center",
   },
   blockWidth: {
     display: "flex",
@@ -29,7 +31,7 @@ const Request = () => {
   const classes = useStyles();
   return (
     <>
-      <form noValidate autoComplete>
+      <form noValidate>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -65,7 +67,7 @@ const Request = () => {
               </IconButton>
             </div>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} className={classes.button}>
             <Button color="primary">Enviar</Button>
           </Grid>
         </Grid>
