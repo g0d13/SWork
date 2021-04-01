@@ -22,7 +22,6 @@ const useStyles = makeStyles({
 const LogItem = ({ log }) => {
   const navigate = useNavigate();
   const classes = useStyles();
-  console.log(log);
 
   return (
     <Card className={classes.cardRoot} variant="outlined">

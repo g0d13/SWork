@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import httpClient from "../api/httpClient";
 import { apiLog } from "../api";
 
 const logsInitialState = {
