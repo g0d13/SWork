@@ -19,6 +19,7 @@ function App() {
       <Router>
         <Layout path="/" redirect="/home">
           <Logs path="/home" />
+          <LogModify path="/log/add" />
           <LogModify path="/log/:id" />
           <Request path="/log/request/:id" />
           <Users path="/users" />
