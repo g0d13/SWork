@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { Fab, Grid } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { getLogs } from "../store/logsSlice";
-import LogItem from "../components/LogItem";
 import { Add } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "@reach/router";
+
+import LogItem from "../components/LogItem";
+import { getLogs, selectAll } from "../store/logsSlice";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -19,7 +20,7 @@ const Logs = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { logList } = useSelector((state) => state.logs);
+  const logList = useSelector(selectAll);
   const classes = useStyles();
 
   useEffect(() => {

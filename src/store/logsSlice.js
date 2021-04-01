@@ -1,11 +1,14 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from "@reduxjs/toolkit";
 import { apiLog } from "../api";
+import usersSlice, { usersAdapter } from "./usersSlice";
 
-const logsInitialState = {
-  logList: [],
-  status: false,
-  error: null,
-};
+export const logsAdapter = createEntityAdapter({
+  selectId: (model) => model.logId,
+});
 
 export const getLogs = createAsyncThunk("logs/getLogs", async () => {
   return apiLog.getLogs();
@@ -13,18 +16,23 @@ export const getLogs = createAsyncThunk("logs/getLogs", async () => {
 
 const logSlice = createSlice({
   name: "logs",
-  initialState: logsInitialState,
+  initialState: logsAdapter.getInitialState({}),
   reducers: {},
   extraReducers: {
     [getLogs.pending]: (state) => {
       state.status = "loading";
     },
     [getLogs.fulfilled]: (state, { meta, payload }) => {
-      console.log(payload);
-      state.logList = payload;
+      logsAdapter.setAll(state, payload);
       state.status = "ok";
     },
   },
 });
+
+export const { actions } = usersSlice;
+
+export const { selectAll, selectById } = usersAdapter.getSelectors(
+  (state) => state.logs
+);
 
 export default logSlice.reducer;
