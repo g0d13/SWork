@@ -1,15 +1,5 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  Grid,
-  Typography,
-} from "@material-ui/core";
-import Chip from "@material-ui/core/Chip";
-import { useNavigate } from "@reach/router";
+import { Grid } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getLogs } from "../store/logsSlice";
 import LogItem from "../components/LogItem";
