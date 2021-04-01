@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -21,8 +21,10 @@ import {
   Notifications,
   Home,
   Menu,
+  ExitToApp,
   AccountCircle,
 } from "@material-ui/icons";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -42,9 +44,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Layout = (props) => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const classes = useStyles();
   const navigate = useNavigate();
+
+  const ui = useSelector((state) => state.ui);
 
   const navigateTo = (direction) => {
     navigate(direction);
@@ -60,11 +64,12 @@ const Layout = (props) => {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            onClick={() => navigate(-1)}
           >
-            <Menu />
+            {ui.shouldExit ? <ExitToApp /> : <Menu />}
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Inicio
+            {ui.title}
           </Typography>
           <IconButton
             aria-label="show 17 new notifications"
