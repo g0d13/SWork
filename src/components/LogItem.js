@@ -33,13 +33,18 @@ const LogItem = ({ log }) => {
       >
         <CardContent>
           <Typography color="textSecondary" gutterBottom>
-            {log.mechanic}
+            {log.mechanic.firstName}
           </Typography>
           <Typography variant="h5">{log.name}</Typography>
           <Box className={classes.chips}>
             {log.categories.map((el) => {
               return (
-                <Chip label={el} size="small" variant="outlined" key={el[0]} />
+                <Chip
+                  label={el.name}
+                  size="small"
+                  variant="outlined"
+                  key={el[0]}
+                />
               );
             })}
           </Box>
