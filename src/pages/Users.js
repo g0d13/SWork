@@ -11,8 +11,8 @@ import { useNavigate } from "@reach/router";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
-import { selectAll } from "../store/usersSlice";
-import { getUsers } from "../store/usersSlice";
+import { selectAll, getUsers } from "../store/usersSlice";
+import uiSlice, { modifyTitle } from "../store/uiSlice";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +32,7 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(getUsers());
+    dispatch(modifyTitle("Usuarios"));
   }, [dispatch]);
 
   return (

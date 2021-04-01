@@ -1,7 +1,14 @@
 import { Button, Grid, TextField } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { modifyTitle } from "../../store/uiSlice";
 
-const Request = () => {
+const Request = (props) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(modifyTitle("Hacer solicitud"));
+  }, []);
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6}>

@@ -7,6 +7,7 @@ import { useNavigate } from "@reach/router";
 
 import LogItem from "../components/LogItem";
 import { getLogs, selectAll } from "../store/logsSlice";
+import { modifyTitle } from "../store/uiSlice";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -25,6 +26,7 @@ const Logs = () => {
 
   useEffect(() => {
     dispatch(getLogs());
+    dispatch(modifyTitle("Inicio"));
   }, [dispatch]);
 
   return (

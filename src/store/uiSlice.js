@@ -10,10 +10,10 @@ const slice = createSlice({
   initialState: uiInitialState,
   reducers: {
     modifyTitle: (state, action) => {
-      state.title = action;
+      state.title = action.payload;
     },
     toggleShouldExit: (state, action) => {
-      state.shouldExit = action;
+      state.shouldExit = action.payload;
     },
   },
   extraReducers: {},
