@@ -1,27 +1,49 @@
 import React, { useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Fab, Grid } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getLogs } from "../store/logsSlice";
 import LogItem from "../components/LogItem";
+import { Add } from "@material-ui/icons";
+import { makeStyles } from "@material-ui/core/styles";
+import { useNavigate } from "@reach/router";
+
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    position: "absolute",
+    bottom: theme.spacing(10),
+    right: theme.spacing(2),
+  },
+}));
 
 const Logs = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { logList } = useSelector((state) => state.logs);
+  const classes = useStyles();
 
   useEffect(() => {
     dispatch(getLogs());
   }, [dispatch]);
 
   return (
-    <div>
+    <>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} lg={4}>
           {logList.map((el, index) => (
-            <LogItem log={el} key={index} />
+            <LogItem log={el} key={el.logId} />
           ))}
         </Grid>
       </Grid>
-    </div>
+      <Fab
+        color="primary"
+        aria-label="add"
+        className={classes.fab}
+        onClick={() => navigate("/users/add")}
+      >
+        <Add />
+      </Fab>
+    </>
   );
 };
 
