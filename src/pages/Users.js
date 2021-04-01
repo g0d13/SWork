@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import { selectAll, getUsers } from "../store/usersSlice";
-import uiSlice, { modifyTitle } from "../store/uiSlice";
+import { modifyTitle } from "../store/uiSlice";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({

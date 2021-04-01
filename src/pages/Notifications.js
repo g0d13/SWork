@@ -21,7 +21,7 @@ const Notifications = () => {
 
   useEffect(() => {
     dispatch(modifyTitle("Notificationes"));
-  }, []);
+  }, [dispatch]);
 
   return (
     <List>
