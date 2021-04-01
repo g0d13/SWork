@@ -40,7 +40,7 @@ const validationSchema = yup.object({
     .required("La contrasena es requerida"),
 });
 
-const UserModify = () => {
+const UserModify = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState("supervisor");
 
@@ -54,7 +54,11 @@ const UserModify = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      if (props.userId) {
+        console.log("update user");
+      } else {
+        console.log("save user");
+      }
     },
   });
 
