@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -10,10 +10,16 @@ import {
   Container,
   CssBaseline,
   Badge,
+  Drawer,
+  Box,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  List,
 } from "@material-ui/core";
 import { light } from "../theme/theme";
 import { ThemeProvider } from "@material-ui/core/styles";
-import { useNavigate } from "@reach/router";
+import { useMatch, useNavigate } from "@reach/router";
 
 import {
   Person,
@@ -21,8 +27,10 @@ import {
   Notifications,
   Home,
   Menu,
-  ExitToApp,
+  ArrowBack,
   AccountCircle,
+  Inbox,
+  Mail,
 } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 
@@ -41,17 +49,36 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     bottom: 0,
   },
+  drawer: {
+    width: "400px",
+  },
 }));
 
 const Layout = (props) => {
-  const [value, setValue] = useState(0);
-  const classes = useStyles();
   const navigate = useNavigate();
+  const match = useMatch("/:el");
+  const classes = useStyles();
+
+  const [value, setValue] = useState(0);
+  const [shouldBack, setShouldBack] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const ui = useSelector((state) => state.ui);
 
   const navigateTo = (direction) => {
     navigate(direction);
+  };
+
+  useEffect(() => {
+    setShouldBack(!!!match);
+  }, [match]);
+
+  const shouldOpenDrawer = () => {
+    if (!shouldBack) {
+      setOpenDrawer(true);
+    } else {
+      navigate(-1);
+    }
   };
 
   return (
@@ -64,9 +91,9 @@ const Layout = (props) => {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
-            onClick={() => navigate(-1)}
+            onClick={shouldOpenDrawer}
           >
-            {ui.shouldExit ? <ExitToApp /> : <Menu />}
+            {shouldBack ? <ArrowBack /> : <Menu />}
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             {ui.title}
@@ -85,6 +112,24 @@ const Layout = (props) => {
           </IconButton>
         </Toolbar>
       </AppBar>
+      <Drawer
+        anchor="left"
+        open={openDrawer}
+        onClose={() => setOpenDrawer(!openDrawer)}
+      >
+        <Box width={275}>
+          <List>
+            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <Inbox /> : <Mail />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
       <Container className={classes.container}>{props.children}</Container>
       <BottomNavigation
         value={value}
