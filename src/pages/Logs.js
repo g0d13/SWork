@@ -40,7 +40,7 @@ const Logs = () => {
         color="primary"
         aria-label="add"
         className={classes.fab}
-        onClick={() => navigate("/users/add")}
+        onClick={() => navigate("/log/add")}
       >
         <Add />
       </Fab>

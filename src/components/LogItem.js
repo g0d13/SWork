@@ -3,12 +3,15 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  CardHeader,
+  IconButton,
   Typography,
 } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import React from "react";
 import { useNavigate } from "@reach/router";
 import { makeStyles } from "@material-ui/core/styles";
+import { Edit, Delete } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   cardRoot: {},
@@ -23,6 +26,15 @@ const LogItem = ({ log }) => {
   const navigate = useNavigate();
   const classes = useStyles();
 
+  const handleClickEdit = (event) => {
+    event.stopPropagation();
+    navigate(`/log/${log.logId}`);
+  };
+
+  const handleClickDelete = (event) => {
+    event.stopPropagation();
+  };
+
   return (
     <Card className={classes.cardRoot} variant="outlined">
       <CardActionArea
@@ -30,11 +42,21 @@ const LogItem = ({ log }) => {
           navigate(`/log/request/${log.logId}`);
         }}
       >
+        <CardHeader
+          title={log.name}
+          subheader={log.mechanic.firstName}
+          action={
+            <>
+              <IconButton aria-label="settings" onClick={handleClickEdit}>
+                <Edit />
+              </IconButton>
+              <IconButton aria-label="delete" onClick={handleClickDelete}>
+                <Delete />
+              </IconButton>
+            </>
+          }
+        />
         <CardContent>
-          <Typography color="textSecondary" gutterBottom>
-            {log.mechanic.firstName}
-          </Typography>
-          <Typography variant="h5">{log.name}</Typography>
           <Box className={classes.chips}>
             {log.categories.map((el) => {
               return (
