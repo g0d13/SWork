@@ -12,6 +12,8 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useSelector } from "react-redux";
+import { selectById } from "../../store/usersSlice";
 
 const useStyles = makeStyles({
   blockWidth: {
@@ -43,9 +45,10 @@ const validationSchema = yup.object({
 const UserModify = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState("supervisor");
+  const user = useSelector((state) => selectById(state, props.userId));
 
   const formik = useFormik({
-    initialValues: {
+    initialValues: user || {
       firstName: "",
       lastName: "",
       email: "",
@@ -118,6 +121,7 @@ const UserModify = (props) => {
               name="password"
               label="Password"
               variant="outlined"
+              type="password"
               value={formik.values.password}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
