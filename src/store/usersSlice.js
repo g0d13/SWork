@@ -18,10 +18,6 @@ const usersSlice = createSlice({
   initialState: usersAdapter.getInitialState({}),
   reducers: {},
   extraReducers: {
-    userAdded: usersAdapter.addOne,
-    usersReceived: (state, action) => {
-      usersAdapter.setAll(state, action.payload.users);
-    },
     [getUsers.fulfilled]: (state, { meta, payload }) => {
       usersAdapter.setAll(state, payload);
       state.status = "ok";

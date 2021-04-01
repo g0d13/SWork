@@ -42,7 +42,7 @@ const LogItem = ({ log }) => {
                   label={el.name}
                   size="small"
                   variant="outlined"
-                  key={el[0]}
+                  key={el.categoryId}
                 />
               );
             })}
