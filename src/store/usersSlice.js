@@ -1,11 +1,13 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from "@reduxjs/toolkit";
 import { apiUser } from "../api";
 
-const userInitialState = {
-  userList: [],
-  status: false,
-  error: null,
-};
+export const usersAdapter = createEntityAdapter({
+  selectId: (user) => user.userId,
+});
 
 export const getUsers = createAsyncThunk("users/getUsers", async () => {
   return apiUser.getUsers();
@@ -13,11 +15,16 @@ export const getUsers = createAsyncThunk("users/getUsers", async () => {
 
 const usersSlice = createSlice({
   name: "users",
-  initialState: userInitialState,
+  initialState: usersAdapter.getInitialState({}),
   reducers: {},
   extraReducers: {
+    userAdded: usersAdapter.addOne,
+    usersReceived: (state, action) => {
+      usersAdapter.setAll(state, action.payload.users);
+    },
     [getUsers.fulfilled]: (state, { meta, payload }) => {
-      state.userList = payload;
+      usersAdapter.setAll(state, payload);
+      state.status = "ok";
     },
     [getUsers.pending]: (state) => {
       state.status = "loading";
@@ -25,6 +32,10 @@ const usersSlice = createSlice({
   },
 });
 
-// export const {} = usersSlice.actions;
+export const { actions } = usersSlice;
+
+export const { selectById, selectAll } = usersAdapter.getSelectors(
+  (state) => state.users
+);
 
 export default usersSlice.reducer;

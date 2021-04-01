@@ -10,6 +10,8 @@ import { Person, Add } from "@material-ui/icons";
 import { useNavigate } from "@reach/router";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+
+import { selectAll } from "../store/usersSlice";
 import { getUsers } from "../store/usersSlice";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -25,7 +27,9 @@ const Users = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const classes = useStyles();
-  const { userList } = useSelector((state) => state.users);
+
+  const userList = useSelector(selectAll);
+
   useEffect(() => {
     dispatch(getUsers());
   }, [dispatch]);
@@ -33,22 +37,23 @@ const Users = () => {
   return (
     <>
       <List>
-        {userList.map((el, index) => {
-          return (
-            <ListItem
-              button
-              onClick={() => navigate(`/users/${el.userId}`)}
-              key={index}
-            >
-              <ListItemAvatar>
-                <Avatar>
-                  <Person />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={el.firstName} secondary={el.role} />
-            </ListItem>
-          );
-        })}
+        {userList &&
+          userList.map((el, index) => {
+            return (
+              <ListItem
+                button
+                onClick={() => navigate(`/users/${el.userId}`)}
+                key={index}
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <Person />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={el.firstName} secondary={el.role} />
+              </ListItem>
+            );
+          })}
       </List>
       <Fab
         color="primary"
