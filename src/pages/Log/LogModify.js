@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     },
   },
 });
-const Request = () => {
+const LogModify = () => {
   const classes = useStyles();
   return (
     <>
@@ -35,7 +35,7 @@ const Request = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              className={classes.inputWith}
+              fullWidth
               id="outlined-basic"
               label="Nombre"
               variant="outlined"
@@ -43,7 +43,7 @@ const Request = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              className={classes.inputWith}
+              fullWidth
               id="outlined-basic"
               label="Detalles adicionales"
               variant="outlined"
@@ -76,4 +76,4 @@ const Request = () => {
   );
 };
 
-export default Request;
+export default LogModify;

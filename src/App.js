@@ -7,10 +7,11 @@ import Layout from "./layout/Layout";
 import Logs from "./pages/Logs";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
-import Request from "./pages/Log/Log";
+import LogModify from "./pages/Log/LogModify";
 import UserModify from "./pages/User/UserModify";
 import Notifications from "./pages/Notifications";
 import NotifyDetails from "./pages/Notify/NotifyDetails";
+import Request from "./pages/Log/Request";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Router>
         <Layout path="/" redirect="/home">
           <Logs path="/home" />
+          <LogModify path="/log/:id" />
           <Request path="/log/request/:id" />
           <Users path="/users" />
           <UserModify path="/users/add" />
