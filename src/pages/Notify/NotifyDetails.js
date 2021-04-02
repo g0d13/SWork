@@ -2,6 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import {
+  Box,
+  Chip,
   FormControlLabel,
   FormGroup,
   Grid,
@@ -11,7 +13,7 @@ import {
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   maxWidth: {
     width: "100%",
   },
@@ -19,7 +21,14 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
   },
-});
+  chipsLevel: {
+    display: "flex",
+    gap: "8px",
+  },
+  label: {
+    color: "rgba(0, 0, 0, 0.54)",
+  },
+}));
 
 const NotifyDetails = () => {
   const classes = useStyles();
@@ -27,14 +36,20 @@ const NotifyDetails = () => {
     <>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <Typography>Marcar hora de llegada</Typography>
+          <Typography>Hora de llegada: </Typography>
           <Typography variant="body2">
             {new Date().toJSON().slice(0, 10).replace(/-/g, "/")}
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6} className={classes.flexDisplay}>
-          <Typography>Severidad del problema</Typography>
-          <Rating name="severity" max={3} />
+          <Typography variant="subtitle1" className={classes.label}>
+            Severidad del problema
+          </Typography>
+          <Box className={classes.chipsLevel}>
+            {["Baja", "Media", "Alta"].map((p) => (
+              <Chip key={p} label={p} clickable variant="outlined" />
+            ))}
+          </Box>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -55,7 +70,7 @@ const NotifyDetails = () => {
           </FormGroup>
         </Grid>
         <Grid item xs={12}>
-          <Button>Enviar</Button>
+          <Button color="primary">Enviar</Button>
         </Grid>
       </Grid>
     </>
