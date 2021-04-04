@@ -1,77 +1,120 @@
+import React, { useEffect, useState } from "react";
+import { Formik, Form, Field } from "formik";
 import {
   Button,
-  Chip,
   Grid,
   IconButton,
-  TextField,
+  LinearProgress,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import { TextField } from "formik-material-ui";
 import { makeStyles } from "@material-ui/core/styles";
+import * as yup from "yup";
+import Chip from "@material-ui/core/Chip";
 import { Add } from "@material-ui/icons";
+import { modifyTitle } from "../../store/uiSlice";
+import { useDispatch } from "react-redux";
+import SearchAdd from "../../components/SearchAdd";
+
 const useStyles = makeStyles({
-  inputWith: {
-    width: "100%",
-  },
-  button: {
-    display: "flex",
-    justifyContent: "center",
-  },
   blockWidth: {
     display: "flex",
     flexDirection: "column",
-    "& div ": {
-      display: "flex",
-      gap: "8px",
-      alignItems: "center",
-    },
+    gap: "10px",
+  },
+  label: {
+    color: "rgba(0, 0, 0, 0.54)",
   },
 });
-const LogModify = () => {
+
+const validationSchema = yup.object({
+  name: yup.string("Ingresa el nombre").required("El nombre es requerido"),
+  details: yup.string("Detalles"),
+});
+
+const LogModify = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [openSearch, setOpenSearch] = useState();
+
+  useEffect(() => {
+    dispatch(modifyTitle(props.id ? "Editar bitacora" : "Agregar bitacora"));
+  }, [dispatch, props.id]);
+
   return (
     <>
-      <form noValidate>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              id="outlined-basic"
-              label="Nombre"
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              id="outlined-basic"
-              label="Detalles adicionales"
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} className={classes.blockWidth}>
-            <Typography color="textSecondary">Categorias</Typography>
-            <div>
-              <Chip label="Categoria 1" />
-              <IconButton color="primary" component="span">
-                <Add />
-              </IconButton>
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={6} className={classes.blockWidth}>
-            <Typography color="textSecondary">Maquinas</Typography>
-            <div>
-              <Chip label="Maquina   1" />
-              <IconButton color="primary" component="span">
-                <Add />
-              </IconButton>
-            </div>
-          </Grid>
-          <Grid item xs={12} className={classes.button}>
-            <Button color="primary">Enviar</Button>
-          </Grid>
-        </Grid>
-      </form>
+      <Formik
+        initialValues={{
+          name: "",
+          details: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            setSubmitting(false);
+            setOpenSearch(true);
+          }, 500);
+        }}
+      >
+        {({ submitForm, isSubmitting }) => (
+          <Form className={classes.blockWidth}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} className={classes.blockWidth}>
+                <Typography className={classes.label}>
+                  Datos generales
+                </Typography>
+                <Field
+                  component={TextField}
+                  variant="outlined"
+                  name="name"
+                  fullWidth
+                  label="Nombre "
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} className={classes.blockWidth}>
+                <Field
+                  component={TextField}
+                  variant="outlined"
+                  fullWidth
+                  label="Detalles"
+                  name="details"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} className={classes.blockWidth}>
+                <Typography color="textSecondary">Categorias</Typography>
+                <div>
+                  <Chip label="Categoria 1" />
+                  <IconButton color="primary" component="span">
+                    <Add />
+                  </IconButton>
+                </div>
+              </Grid>
+              <Grid item xs={12} sm={6} className={classes.blockWidth}>
+                <Typography className={classes.label}>
+                  Mecanico encargado
+                </Typography>
+                <div>
+                  <Chip label="Mecanico" />
+                  <IconButton color="primary" component="span">
+                    <Add />
+                  </IconButton>
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                {isSubmitting && <LinearProgress />}
+                <Button
+                  color="primary"
+                  disabled={isSubmitting}
+                  onClick={submitForm}
+                >
+                  Guardar
+                </Button>
+              </Grid>
+            </Grid>
+          </Form>
+        )}
+      </Formik>
+      <SearchAdd open={openSearch} onClose={() => {}} />
     </>
   );
 };
