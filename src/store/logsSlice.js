@@ -4,7 +4,6 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { apiLog } from "../api";
-import usersSlice, { usersAdapter } from "./usersSlice";
 
 export const logsAdapter = createEntityAdapter({
   selectId: (model) => model.logId,
@@ -29,9 +28,9 @@ const logSlice = createSlice({
   },
 });
 
-export const { actions } = usersSlice;
+export const { actions } = logsAdapter;
 
-export const { selectAll, selectById } = usersAdapter.getSelectors(
+export const { selectAll, selectById } = logsAdapter.getSelectors(
   (state) => state.logs
 );
 
