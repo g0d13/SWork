@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import { selectAll, getUsers } from "../store/usersSlice";
-import { modifyTitle } from "../store/uiSlice";
+import { modifyUiTitle } from "../store/uiSlice";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,9 +31,9 @@ const Users = () => {
   const userList = useSelector(selectAll);
 
   useEffect(() => {
-    dispatch(getUsers());
-    dispatch(modifyTitle("Usuarios"));
-  }, [dispatch]);
+    if (userList.length === 0) dispatch(getUsers());
+    dispatch(modifyUiTitle("Usuarios"));
+  }, [dispatch, userList]);
 
   return (
     <>

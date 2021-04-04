@@ -9,7 +9,7 @@ import { Notifications as Notify } from "@material-ui/icons";
 import { useNavigate } from "@reach/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { modifyTitle } from "../store/uiSlice";
+import { modifyUiTitle } from "../store/uiSlice";
 
 const Notifications = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Notifications = () => {
   };
 
   useEffect(() => {
-    dispatch(modifyTitle("Notificationes"));
+    dispatch(modifyUiTitle("Notificationes"));
   }, [dispatch]);
 
   return (

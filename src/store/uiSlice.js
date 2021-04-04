@@ -9,7 +9,7 @@ const slice = createSlice({
   name: "ui",
   initialState: uiInitialState,
   reducers: {
-    modifyTitle: (state, action) => {
+    modifyUiTitle: (state, action) => {
       state.title = action.payload;
     },
     toggleShouldExit: (state, action) => {
@@ -19,6 +19,6 @@ const slice = createSlice({
   extraReducers: {},
 });
 
-export const { modifyTitle, toggleShouldExit } = slice.actions;
+export const { modifyUiTitle, toggleShouldExit } = slice.actions;
 
 export default slice.reducer;

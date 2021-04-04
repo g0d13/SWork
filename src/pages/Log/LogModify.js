@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as yup from "yup";
 import Chip from "@material-ui/core/Chip";
 import { Add } from "@material-ui/icons";
-import { modifyTitle } from "../../store/uiSlice";
+import { modifyUiTitle } from "../../store/uiSlice";
 import { useDispatch } from "react-redux";
 import SearchAdd from "../../components/SearchAdd";
 
@@ -38,7 +38,7 @@ const LogModify = (props) => {
   const [openSearch, setOpenSearch] = useState();
 
   useEffect(() => {
-    dispatch(modifyTitle(props.id ? "Editar bitacora" : "Agregar bitacora"));
+    dispatch(modifyUiTitle(props.id ? "Editar bitacora" : "Agregar bitacora"));
   }, [dispatch, props.id]);
 
   return (
