@@ -11,9 +11,9 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React from "react";
 import { Close } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
+import { useEffect, useState } from "react";
 
 const useStyles = makeStyles({
   displayTitle: {
@@ -36,36 +36,82 @@ const useStyles = makeStyles({
       fontWeight: "400",
     },
   },
+  boxSelected: {
+    display: "flex",
+    gap: "10px",
+    flexWrap: "wrap",
+  },
 });
 
 const SearchAdd = (props) => {
   const classes = useStyles();
-  const { onClose, open } = props;
-  console.log(onClose);
+  const {
+    onSelect,
+    selected,
+    onClose,
+    open,
+    title,
+    searchIn,
+    itemKey,
+    textKey,
+  } = props;
+  const [items, setItems] = useState([]);
 
-  const handleClose = (value) => {
-    onClose(value);
+  useEffect(() => {
+    // set value from props
+    setItems(searchIn);
+  }, [searchIn]);
+
+  const onSelectItem = (item) => {
+    // remove from list item
+    setItems(items.filter((e) => e[itemKey] !== item[itemKey]));
+    // add to selected list
+    onSelect([...selected, item]);
+  };
+
+  const onDeleteItem = (item) => {
+    // add to the list item
+    setItems((prev) => [item, ...prev]);
+    // remove from selected list
+    onSelect(selected.filter((e) => e[itemKey] !== item[itemKey]));
   };
 
   return (
-    <Drawer onClose={handleClose} anchor="bottom" open={open}>
+    <Drawer onClose={(v) => onClose(v)} anchor="bottom" open={open}>
       <DialogTitle className={classes.displayTitle}>
-        <Typography>Seleccionar {props.title}</Typography>
-        <IconButton>
+        <Typography>Seleccionar {title}</Typography>
+        <IconButton onClick={() => onClose(!open)}>
           <Close />
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.displayContent}>
-        <Box>
-          <Chip label="Busqueda 1" />
+        <Box className={classes.boxSelected}>
+          {selected.map((el) => (
+            <Chip
+              label={el[textKey]}
+              onDelete={() => onDeleteItem(el)}
+              key={el[itemKey]}
+            />
+          ))}
         </Box>
         <TextField fullWidth label="Buscar" />
       </DialogContent>
       <DialogContent>
         <List>
-          <ListItem button onClick={() => {}}>
-            <ListItemText className={classes.listText} primary="Agregar" />
+          <ListItem button>
+            <ListItemText
+              className={classes.listText}
+              primary={`Agregar ${title}`}
+            />
           </ListItem>
+          {items.map((el) => (
+            <ListItem button onClick={() => onSelectItem(el)} key={el[itemKey]}>
+              <ListItemText
+                className={classes.listText}
+                primary={el[textKey]}
+              />
+            </ListItem>
+          ))}
         </List>
       </DialogContent>
     </Drawer>
