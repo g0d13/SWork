@@ -3,27 +3,45 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { apiUser } from "../api";
+import httpClient from "../api/httpClient";
 
-export const usersAdapter = createEntityAdapter({
-  selectId: (user) => user.userId,
+export const usersAdapter = createEntityAdapter();
+
+export const getUsers = createAsyncThunk(
+  "users/getUsers",
+  async (_, { getState, signal, extra }) => {
+    if (getState().users.length === 0) {
+    }
+    const response = await httpClient.get("/api/users");
+    return response.data;
+  }
+);
+
+export const createUser = createAsyncThunk("users/createUser", async (user) => {
+  const response = await httpClient.post("/api/Auth/Register", user);
+  return response.data;
 });
 
-export const getUsers = createAsyncThunk("users/getUsers", async () => {
-  return apiUser.getUsers();
+export const updateUser = createAsyncThunk("users/updateUser", async (id) => {
+  const response = await httpClient.put(`/api/users/${id}`);
+  return response.data;
 });
 
 const usersSlice = createSlice({
   name: "users",
-  initialState: usersAdapter.getInitialState({}),
+  initialState: usersAdapter.getInitialState({
+    status: "idle",
+  }),
   reducers: {},
   extraReducers: {
     [getUsers.fulfilled]: (state, { meta, payload }) => {
       usersAdapter.setAll(state, payload);
+    },
+    [createUser.fulfilled]: (state, payload) => {
       state.status = "ok";
     },
-    [getUsers.pending]: (state) => {
-      state.status = "loading";
+    [createUser.rejected]: (state, payload) => {
+      state.status = "error";
     },
   },
 });

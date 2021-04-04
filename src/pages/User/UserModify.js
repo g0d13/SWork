@@ -1,24 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Box,
   Button,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
+  Chip,
   Grid,
-  Radio,
-  RadioGroup,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useSelector } from "react-redux";
-import { selectById } from "../../store/usersSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createUser, selectById } from "../../store/usersSlice";
+import ChipSelector from "../../components/ChipSelector";
 
 const useStyles = makeStyles({
   blockWidth: {
     display: "flex",
     justifyContent: "center",
+  },
+  label: {
+    color: "rgba(0, 0, 0, 0.54)",
+  },
+  chipsLevel: {
+    display: "flex",
+    gap: "8px",
   },
 });
 
@@ -44,8 +50,9 @@ const validationSchema = yup.object({
 
 const UserModify = (props) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState("supervisor");
-  const user = useSelector((state) => selectById(state, props.userId));
+  const dispatch = useDispatch();
+  const user = useSelector((state) => selectById(state, props.id));
+  const [role, setRole] = useState();
 
   const formik = useFormik({
     initialValues: user || {
@@ -53,27 +60,23 @@ const UserModify = (props) => {
       lastName: "",
       email: "",
       password: "",
-      role: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      if (props.userId) {
+      if (props.id) {
         console.log("update user");
       } else {
-        console.log("save user");
+        dispatch(createUser({ ...values, role }));
       }
     },
   });
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
 
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
+            <Typography className={classes.label}>Datos generales</Typography>
             <TextField
               fullWidth
               id="firstName"
