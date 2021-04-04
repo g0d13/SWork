@@ -1,11 +1,13 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./usersSlice";
-import logsSlice from "./logsSlice";
+import machinesReducer from "./machinesSlice";
+import logsReducer from "./logsSlice";
 import uiSlice from "./uiSlice";
 
 const rootReducer = combineReducers({
   users: userReducer,
-  logs: logsSlice,
+  machines: machinesReducer,
+  logs: logsReducer,
   ui: uiSlice,
 });
 
