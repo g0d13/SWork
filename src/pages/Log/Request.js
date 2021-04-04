@@ -10,12 +10,12 @@ import {
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { modifyUiTitle } from "../../store/uiSlice";
 import ChipSelector from "../../components/ChipSelector";
 import SearchAdd from "../../components/SearchAdd";
-import machineAPI from "../../api/machineAPI";
+import { fetchMachines, selectAll } from "../../store/machinesSlice";
 
 const useStyles = makeStyles({
   label: {
@@ -36,11 +36,17 @@ const Request = (props) => {
   const classes = useStyles();
   const [priority, setPriority] = useState();
   const [showMachines, setShowMachines] = useState(false);
-  const [machines, setMachines] = useState([]);
+  const machineList = useSelector(selectAll);
+  const [selectedMachines, setSelectedMachines] = useState([]);
 
   useEffect(() => {
     dispatch(modifyUiTitle("Hacer solicitud"));
+    dispatch(fetchMachines());
   }, [dispatch]);
+
+  const handleSelectedMachines = (machines) => {
+    setSelectedMachines([...machines]);
+  };
 
   return (
     <Grid container spacing={2}>
@@ -67,15 +73,21 @@ const Request = (props) => {
       </Grid>
       <Grid item xs={12} sm={6}>
         <Box className={classes.chipContainer}>
-          <Chip label="Maquina 1" variant="outlined" />
+          {selectedMachines.map((el) => (
+            <Chip key={el.machineId} label={el.model} variant="outlined" />
+          ))}
           <IconButton color="primary" onClick={() => setShowMachines(true)}>
             <Add />
           </IconButton>
           <SearchAdd
             open={showMachines}
+            title="maquina"
             onClose={(v) => setShowMachines(v)}
-            onSelect={(v) => setMachines(v)}
-            searchIn={machineAPI.getMachines}
+            onSelect={(v) => handleSelectedMachines(v)}
+            selected={selectedMachines}
+            searchIn={machineList}
+            itemKey="machineId"
+            textKey="identifier"
           />
         </Box>
       </Grid>
