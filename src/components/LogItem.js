@@ -56,11 +56,19 @@ const LogItem = ({ log }) => {
             subheader={log.mechanic.firstName}
             action={
               <>
-                <IconButton aria-label="settings" onClick={handleClickEdit}>
-                  <Edit />
+                <IconButton
+                  aria-label="settings"
+                  size="small"
+                  onClick={handleClickEdit}
+                >
+                  <Edit fontSize="small" />
                 </IconButton>
-                <IconButton aria-label="delete" onClick={handleClickDelete}>
-                  <Delete />
+                <IconButton
+                  size="small"
+                  aria-label="delete"
+                  onClick={handleClickDelete}
+                >
+                  <Delete fontSize="small" />
                 </IconButton>
               </>
             }
