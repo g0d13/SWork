@@ -11,7 +11,7 @@ const useStyles = makeStyles({
 
 const ChipSelector = (props) => {
   const classes = useStyles();
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(props.selected);
 
   const handleSetSelected = (e) => {
     setSelected(e);

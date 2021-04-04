@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import {
@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import Rating from "@material-ui/lab/Rating";
+import ChipSelector from "../../components/ChipSelector";
 
 const useStyles = makeStyles((theme) => ({
   maxWidth: {
@@ -21,10 +21,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  chipsLevel: {
-    display: "flex",
-    gap: "8px",
-  },
   label: {
     color: "rgba(0, 0, 0, 0.54)",
   },
@@ -32,26 +28,26 @@ const useStyles = makeStyles((theme) => ({
 
 const NotifyDetails = () => {
   const classes = useStyles();
+  const [priority, setPriority] = useState();
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <Typography>Hora de llegada: </Typography>
           <Typography variant="body2">
             {new Date().toJSON().slice(0, 10).replace(/-/g, "/")}
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={6} className={classes.flexDisplay}>
+        <Grid item xs={12} className={classes.flexDisplay}>
           <Typography variant="subtitle1" className={classes.label}>
             Severidad del problema
           </Typography>
-          <Box className={classes.chipsLevel}>
-            {["Baja", "Media", "Alta"].map((p) => (
-              <Chip key={p} label={p} clickable variant="outlined" />
-            ))}
-          </Box>
+          <ChipSelector
+            items={["Baja", "Media", "Alta"]}
+            onSelect={(e) => setPriority(e)}
+          />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <TextField
             className={classes.maxWidth}
             id="outlined-multiline-static"
@@ -61,7 +57,7 @@ const NotifyDetails = () => {
             variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <FormGroup row>
             <FormControlLabel
               control={<Switch checked={true} name="checkedA" />}

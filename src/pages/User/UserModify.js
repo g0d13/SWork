@@ -129,23 +129,12 @@ const UserModify = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Rol</FormLabel>
-              <RadioGroup name="role" value={value} onChange={handleChange}>
-                <FormControlLabel
-                  value="Supervisor"
-                  name="Supervisor"
-                  control={<Radio />}
-                  label="Supervisor"
-                />
-                <FormControlLabel
-                  value="Mechanic"
-                  name="Mechanic"
-                  control={<Radio />}
-                  label="Mecanico"
-                />
-              </RadioGroup>
-            </FormControl>
+            <Typography className={classes.label}>Datos generales</Typography>
+            <ChipSelector
+              items={["Mechanic", "Supervisor"]}
+              selected={user?.role ?? "Mechanic"}
+              onSelect={(e) => setRole(e)}
+            />
           </Grid>
           <Grid item xs={12} className={classes.blockWidth}>
             <Button color="primary" type="submit">
