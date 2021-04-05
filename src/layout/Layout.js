@@ -16,6 +16,8 @@ import {
   ListItemIcon,
   ListItemText,
   List,
+  Avatar,
+  Divider,
 } from "@material-ui/core";
 import { light } from "../theme/theme";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -117,16 +119,32 @@ const Layout = (props) => {
         open={openDrawer}
         onClose={() => setOpenDrawer(!openDrawer)}
       >
+        <Box
+          padding="16px"
+          paddingX="16px"
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+        >
+          <Avatar>PN</Avatar>
+          <Box paddingLeft="16px" lineHeight="0.1">
+            <Typography variant="h6">Nombre persona</Typography>
+            <Typography variant="caption">Cargo persona</Typography>
+          </Box>
+        </Box>
+        <Divider />
         <Box width={275}>
           <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <Inbox /> : <Mail />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+            {["Inicio ", "Bitacoras", "Usuarios", "Historial"].map(
+              (text, index) => (
+                <ListItem button key={text}>
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <Inbox /> : <Mail />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItem>
+              )
+            )}
           </List>
         </Box>
       </Drawer>
@@ -140,16 +158,16 @@ const Layout = (props) => {
         showLabels
       >
         <BottomNavigationAction
-          label="Home"
+          label="Inicio"
           icon={<Home />}
           onClick={() => navigateTo("/home")}
         />
         <BottomNavigationAction
-          label="Users"
+          label="Usuarios"
           icon={<Person />}
           onClick={() => navigateTo("/users")}
         />
-        <BottomNavigationAction label="Saved" icon={<Bookmark />} />
+        <BottomNavigationAction label="Historial" icon={<Bookmark />} />
       </BottomNavigation>
     </ThemeProvider>
   );
