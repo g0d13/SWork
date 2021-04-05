@@ -58,8 +58,15 @@ const SearchAdd = (props) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
+    // remove duplicated elements
+    const tmpItems = [
+      ...new Map(
+        [...selected, ...searchIn].map((item) => [item[itemKey], item])
+      ).values(),
+    ];
+
     // set value from props
-    setItems(searchIn);
+    setItems(tmpItems);
   }, [searchIn]);
 
   const onSelectItem = (item) => {
@@ -89,6 +96,7 @@ const SearchAdd = (props) => {
           {selected.map((el) => (
             <Chip
               label={el[textKey]}
+              variant="outlined"
               onDelete={() => onDeleteItem(el)}
               key={el[itemKey]}
             />
