@@ -33,6 +33,9 @@ import {
   AccountCircle,
   Inbox,
   Mail,
+  HomeWork,
+  Group,
+  History,
 } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 
@@ -159,15 +162,15 @@ const Layout = (props) => {
       >
         <BottomNavigationAction
           label="Inicio"
-          icon={<Home />}
+          icon={<HomeWork />}
           onClick={() => navigateTo("/home")}
         />
         <BottomNavigationAction
           label="Usuarios"
-          icon={<Person />}
+          icon={<Group />}
           onClick={() => navigateTo("/users")}
         />
-        <BottomNavigationAction label="Historial" icon={<Bookmark />} />
+        <BottomNavigationAction label="Historial" icon={<History />} />
       </BottomNavigation>
     </ThemeProvider>
   );

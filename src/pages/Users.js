@@ -6,7 +6,7 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@material-ui/core";
-import { Person, Add } from "@material-ui/icons";
+import {  PersonAdd } from "@material-ui/icons";
 import { useNavigate } from "@reach/router";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -30,6 +30,12 @@ const Users = () => {
 
   const userList = useSelector(selectAll);
 
+  const getInitials = (name) =>
+    name
+      .split(" ")
+      .map((e) => e[0])
+      .join("");
+
   useEffect(() => {
     if (userList.length === 0) dispatch(getUsers());
     dispatch(modifyUiTitle("Usuarios"));
@@ -38,23 +44,20 @@ const Users = () => {
   return (
     <>
       <List>
-        {userList &&
-          userList.map((el, index) => {
-            return (
-              <ListItem
-                button
-                onClick={() => navigate(`/users/${el.userId}`)}
-                key={index}
-              >
-                <ListItemAvatar>
-                  <Avatar>
-                    <Person />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={el.firstName} secondary={el.role} />
-              </ListItem>
-            );
-          })}
+        {userList.map((el, index) => {
+          return (
+            <ListItem
+              button
+              onClick={() => navigate(`/users/${el.id}`)}
+              key={index}
+            >
+              <ListItemAvatar>
+                <Avatar>{getInitials(el.firstName)}</Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={el.firstName} secondary={el.role} />
+            </ListItem>
+          );
+        })}
       </List>
       <Fab
         color="primary"
@@ -62,7 +65,7 @@ const Users = () => {
         className={classes.fab}
         onClick={() => navigate("/users/add")}
       >
-        <Add />
+        <PersonAdd />
       </Fab>
     </>
   );
