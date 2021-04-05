@@ -10,8 +10,6 @@ export const usersAdapter = createEntityAdapter();
 export const getUsers = createAsyncThunk(
   "users/getUsers",
   async (_, { getState, signal, extra }) => {
-    if (getState().users.length === 0) {
-    }
     const response = await httpClient.get("/api/users");
     return response.data;
   }

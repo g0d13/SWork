@@ -24,7 +24,7 @@ function App() {
           <Request path="/log/request/:id" />
           <Users path="/users" />
           <UserModify path="/users/add" />
-          <UserModify path="/users/:userId" />
+          <UserModify path="/users/:id" />
           <Notifications path="/notifications" />
           <NotifyDetails path="/notify/:id" />
         </Layout>
