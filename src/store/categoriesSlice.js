@@ -25,7 +25,7 @@ const slice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchCategories.fulfilled]: (state, { meta, payload }) => {
-      fetchCategories.setAll(state, payload);
+      categoriesAdapter.setAll(state, payload);
     },
   },
 });
