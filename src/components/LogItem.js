@@ -14,7 +14,6 @@ import { Edit, Delete } from "@material-ui/icons";
 import ConfirmDialog from "./ConfirmDialog";
 
 const useStyles = makeStyles({
-  cardRoot: {},
   chips: {
     display: "flex",
     gap: "2px",
@@ -26,6 +25,10 @@ const LogItem = ({ log }) => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [openDialog, setOpenDialog] = useState();
+
+  const handleClickCard = () => {
+    navigate(`/log/request/${log.logId}`);
+  };
 
   const handleClickEdit = (event) => {
     event.stopPropagation();
@@ -42,55 +45,42 @@ const LogItem = ({ log }) => {
     setOpenDialog(false);
   };
 
+  const actions = (hovered) => (
+    <React.Fragment>
+      <IconButton aria-label="settings" size="small" onClick={handleClickEdit}>
+        <Edit fontSize="small" />
+      </IconButton>
+      <IconButton size="small" aria-label="delete" onClick={handleClickDelete}>
+        <Delete fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
   return (
-    <>
-      <Card className={classes.cardRoot} variant="outlined">
-        <CardActionArea
-          component="div"
-          onClick={(ev) => {
-            navigate(`/log/request/${log.logId}`);
-          }}
-        >
+    <React.Fragment>
+      <Card onClick={() => handleClickCard()} variant="outlined">
+        <CardActionArea component="div">
           <CardHeader
             title={log.name}
             subheader={log.mechanic.firstName}
-            action={
-              <>
-                <IconButton
-                  aria-label="settings"
-                  size="small"
-                  onClick={handleClickEdit}
-                >
-                  <Edit fontSize="small" />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  aria-label="delete"
-                  onClick={handleClickDelete}
-                >
-                  <Delete fontSize="small" />
-                </IconButton>
-              </>
-            }
+            action={actions()}
           />
           <CardContent>
             <Box className={classes.chips}>
-              {log.categories.map((el) => {
-                return (
-                  <Chip
-                    label={el.name}
-                    size="small"
-                    variant="outlined"
-                    key={el.categoryId}
-                  />
-                );
-              })}
+              {log.categories.map((el) => (
+                <Chip
+                  label={el.name}
+                  size="small"
+                  variant="outlined"
+                  key={el.categoryId}
+                />
+              ))}
             </Box>
           </CardContent>
         </CardActionArea>
       </Card>
       <ConfirmDialog open={openDialog} onClose={handleClose} />
-    </>
+    </React.Fragment>
   );
 };
 
