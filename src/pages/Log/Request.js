@@ -31,7 +31,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Request = (props) => {
+const Request = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [priority, setPriority] = useState();
@@ -41,7 +41,7 @@ const Request = (props) => {
 
   useEffect(() => {
     dispatch(modifyUiTitle("Hacer solicitud"));
-    dispatch(fetchMachines());
+    if (machineList.length === 0) dispatch(fetchMachines());
   }, [dispatch]);
 
   const handleSelectedMachines = (machines) => {

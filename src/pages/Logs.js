@@ -25,9 +25,9 @@ const Logs = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getLogs());
+    if (logList.length === 0) dispatch(getLogs());
     dispatch(modifyUiTitle("Inicio"));
-  }, [dispatch]);
+  }, [dispatch, logList]);
 
   return (
     <>
