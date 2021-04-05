@@ -6,7 +6,7 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@material-ui/core";
-import {  PersonAdd } from "@material-ui/icons";
+import { PersonAdd } from "@material-ui/icons";
 import { useNavigate } from "@reach/router";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
