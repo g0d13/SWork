@@ -41,6 +41,9 @@ const useStyles = makeStyles({
     gap: "10px",
     flexWrap: "wrap",
   },
+  textWarning: {
+    color: "#f44336",
+  },
 });
 
 const SearchAdd = (props) => {
@@ -54,6 +57,7 @@ const SearchAdd = (props) => {
     searchIn,
     itemKey,
     textKey,
+    onlyOne,
   } = props;
   const [items, setItems] = useState([]);
 
@@ -70,6 +74,9 @@ const SearchAdd = (props) => {
   }, [searchIn]);
 
   const onSelectItem = (item) => {
+    if (onlyOne && selected.length === 1) {
+      return;
+    }
     // remove from list item
     setItems(items.filter((e) => e[itemKey] !== item[itemKey]));
     // add to selected list
@@ -102,6 +109,11 @@ const SearchAdd = (props) => {
             />
           ))}
         </Box>
+        {onlyOne && selected.length === 1 && (
+          <Typography className={classes.textWarning} variant="caption">
+            Solo se puede seleccionar un objeto
+          </Typography>
+        )}
         <TextField fullWidth label="Buscar" />
       </DialogContent>
       <DialogContent>
