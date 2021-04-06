@@ -75,7 +75,6 @@ const UserModify = (props) => {
             <Typography className={classes.label}>Datos generales</Typography>
             <TextField
               fullWidth
-              id="firstName"
               name="firstName"
               label="Nombre"
               variant="outlined"
@@ -90,7 +89,6 @@ const UserModify = (props) => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              id="lastName"
               name="lastName"
               label="Apellidos"
               variant="outlined"
@@ -103,7 +101,6 @@ const UserModify = (props) => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              id="email"
               name="email"
               label="Correo"
               variant="outlined"
@@ -116,7 +113,6 @@ const UserModify = (props) => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              id="password"
               name="password"
               label="Password"
               variant="outlined"
