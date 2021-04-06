@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Chip,
-  Grid,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Button, Grid, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser, selectById } from "../../store/usersSlice";
 import ChipSelector from "../../components/ChipSelector";
+import useUiTitle from "../../hooks/useUiTitle";
 
 const useStyles = makeStyles({
   blockWidth: {
@@ -53,6 +47,8 @@ const UserModify = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => selectById(state, props.id));
   const [role, setRole] = useState();
+
+  useUiTitle(props.id ? `Editar ${user.firstName}` : "Agregar usuario");
 
   const formik = useFormik({
     initialValues: user || {

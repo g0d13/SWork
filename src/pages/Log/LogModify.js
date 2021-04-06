@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Formik, Form, Field } from "formik";
 import {
+  Box,
   Button,
   Grid,
   IconButton,
-  LinearProgress,
+  TextField,
   Typography,
 } from "@material-ui/core";
-import { TextField } from "formik-material-ui";
 import { makeStyles } from "@material-ui/core/styles";
-import * as yup from "yup";
 import Chip from "@material-ui/core/Chip";
 import { Add } from "@material-ui/icons";
-import { modifyUiTitle } from "../../store/uiSlice";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import SearchAdd from "../../components/SearchAdd";
+import { fetchCategories } from "../../store/categoriesSlice";
+import { selectAll as selectAllCategories } from "../../store/categoriesSlice";
+import useUiTitle from "../../hooks/useUiTitle";
+import useStateFetch from "../../hooks/useStateFetch";
 
 const useStyles = makeStyles({
   blockWidth: {
@@ -27,95 +28,72 @@ const useStyles = makeStyles({
   },
 });
 
-const validationSchema = yup.object({
-  name: yup.string("Ingresa el nombre").required("El nombre es requerido"),
-  details: yup.string("Detalles"),
-});
-
 const LogModify = (props) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const [openSearch, setOpenSearch] = useState();
+  const [showCategories, setShowCategories] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-  useEffect(() => {
-    dispatch(modifyUiTitle(props.id ? "Editar bitacora" : "Agregar bitacora"));
-  }, [dispatch, props.id]);
+  const categoriesList = useSelector(selectAllCategories);
+
+  useUiTitle(props.id ? "Editar bitacora" : "Agregar bitacora");
+  useStateFetch(categoriesList, fetchCategories());
 
   return (
-    <>
-      <Formik
-        initialValues={{
-          name: "",
-          details: "",
-        }}
-        validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            setSubmitting(false);
-            setOpenSearch(true);
-          }, 500);
-        }}
-      >
-        {({ submitForm, isSubmitting }) => (
-          <Form className={classes.blockWidth}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} className={classes.blockWidth}>
-                <Typography className={classes.label}>
-                  Datos generales
-                </Typography>
-                <Field
-                  component={TextField}
-                  variant="outlined"
-                  name="name"
-                  fullWidth
-                  label="Nombre "
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} className={classes.blockWidth}>
-                <Field
-                  component={TextField}
-                  variant="outlined"
-                  fullWidth
-                  label="Detalles"
-                  name="details"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} className={classes.blockWidth}>
-                <Typography color="textSecondary">Categorias</Typography>
-                <div>
-                  <Chip label="Categoria 1" />
-                  <IconButton color="primary" component="span">
-                    <Add />
-                  </IconButton>
-                </div>
-              </Grid>
-              <Grid item xs={12} sm={6} className={classes.blockWidth}>
-                <Typography className={classes.label}>
-                  Mecanico encargado
-                </Typography>
-                <div>
-                  <Chip label="Mecanico" />
-                  <IconButton color="primary" component="span">
-                    <Add />
-                  </IconButton>
-                </div>
-              </Grid>
-              <Grid item xs={12}>
-                {isSubmitting && <LinearProgress />}
-                <Button
-                  color="primary"
-                  disabled={isSubmitting}
-                  onClick={submitForm}
-                >
-                  Guardar
-                </Button>
-              </Grid>
-            </Grid>
-          </Form>
-        )}
-      </Formik>
-      <SearchAdd open={openSearch} onClose={() => {}} />
-    </>
+    <React.Fragment>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography className={classes.label}>Datos generales</Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} className={classes.blockWidth}>
+          <TextField variant="outlined" name="name" fullWidth label="Nombre " />
+        </Grid>
+        <Grid item xs={12} sm={6} className={classes.blockWidth}>
+          <TextField
+            variant="outlined"
+            fullWidth
+            label="Detalles"
+            name="details"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} className={classes.blockWidth}>
+          <Typography color="textSecondary">Categorias</Typography>
+          <Box>
+            {selectedCategories.map((el) => (
+              <Chip label={el.name} variant="outlined" key={el.categoryId} />
+            ))}
+            <IconButton
+              color="primary"
+              component="span"
+              onClick={() => setShowCategories(!showCategories)}
+            >
+              <Add />
+            </IconButton>
+            <SearchAdd
+              open={showCategories}
+              title="categoria"
+              onClose={(v) => setShowCategories(v)}
+              onSelect={(v) => setSelectedCategories([...v])}
+              selected={selectedCategories}
+              searchIn={categoriesList}
+              itemKey="categoryId"
+              textKey="name"
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={6} className={classes.blockWidth}>
+          <Typography className={classes.label}>Mecanico encargado</Typography>
+          <div>
+            <Chip label="Mecanico" />
+            <IconButton color="primary" component="span">
+              <Add />
+            </IconButton>
+          </div>
+        </Grid>
+        <Grid item xs={12}>
+          <Button color="primary">Guardar</Button>
+        </Grid>
+      </Grid>
+    </React.Fragment>
   );
 };
 

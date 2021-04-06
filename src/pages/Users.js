@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Avatar,
   Fab,
@@ -9,11 +10,11 @@ import {
 import { PersonAdd } from "@material-ui/icons";
 import { useNavigate } from "@reach/router";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
 
 import { selectAll, getUsers } from "../store/usersSlice";
-import { modifyUiTitle } from "../store/uiSlice";
 import { makeStyles } from "@material-ui/core/styles";
+import useUiTitle from "../hooks/useUiTitle";
+import useStateFetch from "../hooks/useStateFetch";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -25,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Users = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const classes = useStyles();
 
   const userList = useSelector(selectAll);
@@ -36,13 +36,12 @@ const Users = () => {
       .map((e) => e[0])
       .join("");
 
-  useEffect(() => {
-    if (userList.length === 0) dispatch(getUsers());
-    dispatch(modifyUiTitle("Usuarios"));
-  }, [dispatch, userList]);
+  useUiTitle("Usuarios");
+
+  useStateFetch(userList, getUsers());
 
   return (
-    <>
+    <React.Fragment>
       <List>
         {userList.map((el, index) => {
           return (
@@ -67,7 +66,7 @@ const Users = () => {
       >
         <PersonAdd />
       </Fab>
-    </>
+    </React.Fragment>
   );
 };
 

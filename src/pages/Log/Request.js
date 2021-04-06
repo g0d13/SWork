@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -10,12 +10,13 @@ import {
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { modifyUiTitle } from "../../store/uiSlice";
 import ChipSelector from "../../components/ChipSelector";
 import SearchAdd from "../../components/SearchAdd";
 import { fetchMachines, selectAll } from "../../store/machinesSlice";
+import useUiTitle from "../../hooks/useUiTitle";
+import useStateFetch from "../../hooks/useStateFetch";
 
 const useStyles = makeStyles({
   label: {
@@ -32,21 +33,21 @@ const useStyles = makeStyles({
 });
 
 const Request = () => {
-  const dispatch = useDispatch();
   const classes = useStyles();
   const [priority, setPriority] = useState();
   const [showMachines, setShowMachines] = useState(false);
   const machineList = useSelector(selectAll);
   const [selectedMachines, setSelectedMachines] = useState([]);
 
-  useEffect(() => {
-    dispatch(modifyUiTitle("Hacer solicitud"));
-    if (machineList.length === 0) dispatch(fetchMachines());
-  }, [dispatch]);
+  useUiTitle("Crear solicitud");
+
+  useStateFetch(machineList, fetchMachines());
 
   const handleSelectedMachines = (machines) => {
     setSelectedMachines([...machines]);
   };
+
+  const handleClickButton = () => {};
 
   return (
     <Grid container spacing={2}>
@@ -92,7 +93,9 @@ const Request = () => {
         </Box>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Button color="primary">Enviar</Button>
+        <Button color="primary" onClick={handleClickButton}>
+          Enviar
+        </Button>
       </Grid>
     </Grid>
   );
