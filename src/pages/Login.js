@@ -59,7 +59,6 @@ const Login = () => {
           <form onSubmit={formik.handleSubmit} className={classes.form}>
             <TextField
               fullWidth
-              id="email"
               name="email"
               label="Correo"
               value={formik.values.email}
@@ -70,7 +69,6 @@ const Login = () => {
             />
             <TextField
               fullWidth
-              id="password"
               name="password"
               type="password"
               label="Password"
