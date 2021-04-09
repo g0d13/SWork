@@ -1,19 +1,13 @@
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Button, Card, CardContent, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { doLogin } from "../store/authSlice";
-import { useEffect } from "react";
 import { useNavigate } from "@reach/router";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
 import TextInput from "../components/TextInput";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles({
   root: {
@@ -23,7 +17,8 @@ const useStyles = makeStyles({
     height: "100vh",
   },
   card: {
-    width: "450px",
+    width: "350px",
+    maxWidth: "450px",
   },
   form: {
     "& *": {
@@ -51,6 +46,7 @@ const Login = () => {
   });
 
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const formik = useFormik({
     initialValues: {
@@ -59,7 +55,13 @@ const Login = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (data) => {
-      dispatch(doLogin(data));
+      dispatch(doLogin(data)).then((e) => {
+        if (e.error?.message) {
+          enqueueSnackbar("Usuario y/o contrasenia incorrecta", {
+            variant: "Error",
+          });
+        }
+      });
     },
   });
 
