@@ -1,14 +1,20 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import userReducer from "./usersSlice";
-import machinesReducer from "./machinesSlice";
-import logsReducer from "./logsSlice";
-import uiSlice from "./uiSlice";
-import { signal } from "../signalr/index";
+import authReducer from "./slices/auth";
+import userReducer from "./slices/users";
+import machinesReducer from "./slices/machines";
+import categoriesReducer from "./slices/categories";
+import logsReducer from "./slices/logs";
+import uiSlice from "./slices/ui";
+
+import { signal } from "./helpers/signalr";
+
 const rootReducer = combineReducers({
   users: userReducer,
   machines: machinesReducer,
+  categories: categoriesReducer,
   logs: logsReducer,
   ui: uiSlice,
+  auth: authReducer,
 });
 
 export default configureStore({

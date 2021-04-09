@@ -3,7 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import httpClient from "../api/httpClient";
+import httpClient from "../../api/httpClient";
 
 const module_name = "categories";
 

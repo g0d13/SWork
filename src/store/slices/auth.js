@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import httpClient from "../api/httpClient";
+import httpClient from "../../api/httpClient";
 
 const module_name = "auth";
 
 const initialState = {
   jwt: "",
-  status: "no_loggin",
+  status: "no_logging",
   user: {
-    name: "",
+    firstName: "",
     email: "",
     role: "",
   },
@@ -19,6 +19,7 @@ export const doLogin = createAsyncThunk(
     const response = await httpClient.post("/api/Auth/Login", data);
     const token = response.data.token;
     httpClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
     return response;
   }
 );
@@ -38,7 +39,7 @@ export const refreshToken = createAsyncThunk(
   }
 );
 
-const authSlice = createSlice({
+const auth = createSlice({
   name: module_name,
   initialState: initialState,
   reducers: {
@@ -46,7 +47,7 @@ const authSlice = createSlice({
   },
   extraReducers: {
     [doLogin.fulfilled]: (state, { meta, payload }) => {
-      const { token, ...user } = payload.data;
+      let { token, ...user } = payload.data;
       state.jwt = token;
       state.user = user;
       state.status = "ok";
@@ -60,6 +61,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { actions } = authSlice;
+export const { actions } = auth;
 
-export default authSlice.reducer;
+export default auth.reducer;

@@ -3,7 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import httpClient from "../api/httpClient";
+import httpClient from "../../api/httpClient";
 
 export const usersAdapter = createEntityAdapter();
 
@@ -25,7 +25,7 @@ export const updateUser = createAsyncThunk("users/updateUser", async (id) => {
   return response.data;
 });
 
-const usersSlice = createSlice({
+const users = createSlice({
   name: "users",
   initialState: usersAdapter.getInitialState({
     status: "idle",
@@ -44,10 +44,10 @@ const usersSlice = createSlice({
   },
 });
 
-export const { actions } = usersSlice;
+export const { actions } = users;
 
 export const { selectById, selectAll } = usersAdapter.getSelectors(
   (state) => state.users
 );
 
-export default usersSlice.reducer;
+export default users.reducer;
