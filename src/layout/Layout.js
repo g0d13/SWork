@@ -24,10 +24,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { useMatch, useNavigate } from "@reach/router";
 
 import {
-  Person,
-  Bookmark,
   Notifications,
-  Home,
   Menu,
   ArrowBack,
   AccountCircle,
@@ -38,6 +35,7 @@ import {
   History,
 } from "@material-ui/icons";
 import { useSelector } from "react-redux";
+import useIsLoggedIn from "../hooks/useIsLoggedIn";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -48,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     marginTop: "10px",
+    marginBottom: "56px",
   },
   bottomNavigation: {
     width: "100%",
@@ -63,10 +62,18 @@ const Layout = (props) => {
   const navigate = useNavigate();
   const match = useMatch("/:el");
   const classes = useStyles();
+  const userData = useSelector((state) => state.auth.user);
 
   const [value, setValue] = useState(0);
   const [shouldBack, setShouldBack] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  useIsLoggedIn(
+    () => {},
+    () => {
+      navigate("/login");
+    }
+  );
 
   const ui = useSelector((state) => state.ui);
 
@@ -131,8 +138,8 @@ const Layout = (props) => {
         >
           <Avatar>PN</Avatar>
           <Box paddingLeft="16px" lineHeight="0.1">
-            <Typography variant="h6">Nombre persona</Typography>
-            <Typography variant="caption">Cargo persona</Typography>
+            <Typography variant="h6">{userData.firstName}</Typography>
+            <Typography variant="caption">{userData.role}</Typography>
           </Box>
         </Box>
         <Divider />
