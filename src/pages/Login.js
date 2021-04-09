@@ -8,6 +8,12 @@ import {
 } from "@material-ui/core";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { doLogin } from "../store/authSlice";
+import { useEffect } from "react";
+import { useNavigate } from "@reach/router";
+import useIsLoggedIn from "../hooks/useIsLoggedIn";
+import TextInput from "../components/TextInput";
 
 const useStyles = makeStyles({
   root: {
@@ -39,15 +45,21 @@ const validationSchema = yup.object({
 
 const Login = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
+  useIsLoggedIn(() => {
+    navigate("/home");
+  });
+
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: "1234abcd@email.com",
+      password: "1234abcd",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (data) => {
+      dispatch(doLogin(data));
     },
   });
 
@@ -57,27 +69,12 @@ const Login = () => {
         <CardContent>
           <Typography variant="h6">Inicia sesion</Typography>
           <form onSubmit={formik.handleSubmit} className={classes.form}>
-            <TextField
-              fullWidth
+            <TextInput
               name="email"
-              label="Correo"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-              variant="outlined"
+              label="Correo electronico"
+              formik={formik}
             />
-            <TextField
-              fullWidth
-              name="password"
-              type="password"
-              label="Password"
-              variant="outlined"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-            />
+            <TextInput name="password" type="password" formik={formik} />
             <Button fullWidth color="primary" type="submit">
               Iniciar
             </Button>
