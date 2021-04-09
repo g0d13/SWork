@@ -3,7 +3,7 @@ import { Button, Card, CardContent, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
-import { doLogin } from "../store/authSlice";
+import { doLogin } from "../store/slices/auth";
 import { useNavigate } from "@reach/router";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
 import TextInput from "../components/TextInput";

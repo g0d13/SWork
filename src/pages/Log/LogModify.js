@@ -15,17 +15,17 @@ import SearchAdd from "../../components/SearchAdd";
 import {
   fetchCategories,
   selectAll as selectAllCategories,
-} from "../../store/categoriesSlice";
+} from "../../store/slices/categories";
 import { useDispatch } from "react-redux";
 import {
   getUsers,
   selectAll as selectAllMechanics,
-} from "../../store/usersSlice";
+} from "../../store/slices/users";
 import useUiTitle from "../../hooks/useUiTitle";
 import * as yup from "yup";
 import useStateFetch from "../../hooks/useStateFetch";
 import { useFormik } from "formik";
-import { postLog } from "../../store/logsSlice";
+import { postLog } from "../../store/slices/logs";
 import TextInput from "../../components/TextInput";
 
 const useStyles = makeStyles({

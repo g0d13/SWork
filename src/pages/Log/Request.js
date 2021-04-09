@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 
 import ChipSelector from "../../components/ChipSelector";
 import SearchAdd from "../../components/SearchAdd";
-import { fetchMachines, selectAll } from "../../store/machinesSlice";
+import { fetchMachines, selectAll } from "../../store/slices/machines";
 import useUiTitle from "../../hooks/useUiTitle";
 import useStateFetch from "../../hooks/useStateFetch";
 import * as yup from "yup";

@@ -9,18 +9,21 @@ import {
 } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import { useNavigate } from "@reach/router";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { selectAll, getUsers } from "../store/usersSlice";
+import { selectAll, getUsers } from "../store/slices/users";
 import { makeStyles } from "@material-ui/core/styles";
 import useUiTitle from "../hooks/useUiTitle";
 import useStateFetch from "../hooks/useStateFetch";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
-    position: "absolute",
+    position: "fixed",
     bottom: theme.spacing(10),
     right: theme.spacing(2),
+  },
+  listContainer: {
+    marginTop: "-20px",
   },
 }));
 
@@ -42,7 +45,7 @@ const Users = () => {
 
   return (
     <React.Fragment>
-      <List>
+      <List className={classes.listContainer}>
         {userList.map((el, index) => {
           return (
             <ListItem

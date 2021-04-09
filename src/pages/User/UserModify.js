@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser, selectById } from "../../store/usersSlice";
+import { createUser, selectById } from "../../store/slices/users";
 import ChipSelector from "../../components/ChipSelector";
 import useUiTitle from "../../hooks/useUiTitle";
 import TextInput from "../../components/TextInput";

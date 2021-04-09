@@ -9,7 +9,7 @@ import { Notifications as Notify } from "@material-ui/icons";
 import { useNavigate } from "@reach/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { modifyUiTitle } from "../store/uiSlice";
+import { modifyUiTitle } from "../store/slices/ui";
 
 const Notifications = () => {
   const navigate = useNavigate();
