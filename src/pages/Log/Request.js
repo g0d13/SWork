@@ -19,6 +19,7 @@ import useUiTitle from "../../hooks/useUiTitle";
 import useStateFetch from "../../hooks/useStateFetch";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import TextInput from "../../components/TextInput";
 
 const useStyles = makeStyles({
   label: {
@@ -88,32 +89,18 @@ const Request = (props) => {
           <Typography className={classes.label}>Datos generales</Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
+          <TextInput
             name="problemCode"
             label="Codigo del problema"
-            variant="outlined"
-            value={formik.values.problemCode}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.problemCode && Boolean(formik.errors.problemCode)
-            }
-            helperText={formik.touched.problemCode && formik.errors.problemCode}
+            formik={formik}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
+          <TextInput
             multiline
             name="description"
-            value={formik.values.description}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.description && Boolean(formik.errors.description)
-            }
-            helperText={formik.touched.description && formik.errors.description}
             label="Descripcion"
-            variant="outlined"
+            formik={formik}
           />
         </Grid>
         <Grid item xs={12} className={classes.subtitle}>
@@ -134,15 +121,15 @@ const Request = (props) => {
               <Add />
             </IconButton>
             <SearchAdd
-              open={showMachines}
-              title="maquina"
-              onClose={(v) => setShowMachines(v)}
-              onSelect={(v) => handleSelectedMachines(v)}
-              selected={selectedMachines}
-              searchIn={machineList}
-              itemKey="machineId"
-              textKey="identifier"
-              onlyOne
+              visible={[showMachines, setShowMachines]}
+              selectedItems={[selectedMachines, setSelectedMachines]}
+              config={{
+                title: "maquina",
+                searchIn: machineList,
+                itemKey: "machineId",
+                textKey: "identifier",
+                onlyOne: true,
+              }}
             />
           </Box>
         </Grid>

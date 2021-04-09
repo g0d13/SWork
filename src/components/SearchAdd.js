@@ -11,6 +11,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import PropTypes from "prop-types";
 import { Close } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect, useState } from "react";
@@ -48,18 +49,15 @@ const useStyles = makeStyles({
 
 const SearchAdd = (props) => {
   const classes = useStyles();
-  const {
-    onSelect,
-    selected,
-    onClose,
-    open,
-    title,
-    searchIn,
-    itemKey,
-    textKey,
-    onlyOne,
-  } = props;
+
+  const { selectedItems, visible, config } = props;
+  const [selected, onSelect] = selectedItems;
+  const [open, onClose] = visible;
+  const { searchIn, itemKey, textKey, onlyOne, title } = config;
+
+  // local state to perform filtering
   const [items, setItems] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     // remove duplicated elements
@@ -74,6 +72,7 @@ const SearchAdd = (props) => {
   }, [searchIn]);
 
   const onSelectItem = (item) => {
+    // avoid pushing more elements if onlyOne is selected
     if (onlyOne && selected.length === 1) {
       return;
     }
@@ -84,11 +83,13 @@ const SearchAdd = (props) => {
   };
 
   const onDeleteItem = (item) => {
-    // add to the list item
+    // add to list item
     setItems((prev) => [item, ...prev]);
     // remove from selected list
     onSelect(selected.filter((e) => e[itemKey] !== item[itemKey]));
   };
+  // TODO: finish search element
+  const handleOnSearch = (element) => {};
 
   return (
     <Drawer onClose={(v) => onClose(v)} anchor="bottom" open={open}>
@@ -111,10 +112,15 @@ const SearchAdd = (props) => {
         </Box>
         {onlyOne && selected.length === 1 && (
           <Typography className={classes.textWarning} variant="caption">
-            Solo se puede seleccionar un objeto
+            Solo se puede seleccionar un {title}
           </Typography>
         )}
-        <TextField fullWidth label="Buscar" />
+        <TextField
+          fullWidth
+          value={searchText}
+          onChange={handleOnSearch}
+          label="Buscar"
+        />
       </DialogContent>
       <DialogContent>
         <List>
@@ -138,4 +144,15 @@ const SearchAdd = (props) => {
   );
 };
 
+SearchAdd.propTypes = {
+  selectedItems: PropTypes.array.isRequired,
+  visible: PropTypes.array.isRequired,
+  config: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    searchIn: PropTypes.array,
+    itemKey: PropTypes.string,
+    textKey: PropTypes.string,
+    onlyOne: PropTypes.bool,
+  }).isRequired,
+};
 export default SearchAdd;

@@ -120,14 +120,14 @@ const LogModify = (props) => {
               <Add />
             </IconButton>
             <SearchAdd
-              open={showCategories}
-              title="categoria"
-              onClose={(v) => setShowCategories(v)}
-              onSelect={(v) => setSelectedCategories([...v])}
-              selected={selectedCategories}
-              searchIn={categoriesList}
-              itemKey="categoryId"
-              textKey="name"
+              visible={[showCategories, setShowCategories]}
+              selectedItems={[selectedCategories, setSelectedCategories]}
+              config={{
+                title: "categoria",
+                searchIn: categoriesList,
+                itemKey: "categoryId",
+                textKey: "name",
+              }}
             />
           </Box>
         </Grid>
@@ -145,15 +145,15 @@ const LogModify = (props) => {
               <Add />
             </IconButton>
             <SearchAdd
-              open={showMechanics}
-              title="mecanico"
-              onlyOne
-              onClose={(v) => setShowMechanics(v)}
-              onSelect={(v) => setSelectedMechanic([...v])}
-              selected={selectedMechanic}
-              searchIn={mechanicsList}
-              itemKey="id"
-              textKey="firstName"
+              visible={[showMechanics, setShowMechanics]}
+              selectedItems={[selectedMechanic, setSelectedMechanic]}
+              config={{
+                title: "mecanico",
+                searchIn: mechanicsList,
+                itemKey: "id",
+                textKey: "firstName",
+                onlyOne: true,
+              }}
             />
           </Box>
         </Grid>

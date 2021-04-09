@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Grid, TextField, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { Button, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createUser, selectById } from "../../store/usersSlice";
 import ChipSelector from "../../components/ChipSelector";
 import useUiTitle from "../../hooks/useUiTitle";
+import TextInput from "../../components/TextInput";
 
 const useStyles = makeStyles({
   blockWidth: {
@@ -73,54 +74,20 @@ const UserModify = (props) => {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Typography className={classes.label}>Datos generales</Typography>
-            <TextField
-              fullWidth
-              name="firstName"
-              label="Nombre"
-              variant="outlined"
-              value={formik.values.firstName}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.firstName && Boolean(formik.errors.firstName)
-              }
-              helperText={formik.touched.firstName && formik.errors.firstName}
-            />
+            <TextInput name="firstName" label="Nombre" formik={formik} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              name="lastName"
-              label="Apellidos"
-              variant="outlined"
-              value={formik.values.lastName}
-              onChange={formik.handleChange}
-              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-              helperText={formik.touched.lastName && formik.errors.lastName}
-            />
+            <TextInput name="lastName" label="Apellidos" formik={formik} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              name="email"
-              label="Correo"
-              variant="outlined"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-            />
+            <TextInput name="email" label="Correo" formik={formik} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
+            <TextInput
+              type="password"
               name="password"
               label="Password"
-              variant="outlined"
-              type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
+              formik={formik}
             />
           </Grid>
           <Grid item xs={12}>
