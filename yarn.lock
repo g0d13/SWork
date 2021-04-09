@@ -1483,6 +1483,15 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
 
+"@microsoft/signalr@^3.1.4":
+  version "3.1.14"
+  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-3.1.14.tgz#ea11d813ce5d65b422927787a33f7ea041445357"
+  integrity sha512-f/pgm+DxWU7DEdjF6aztXIfcdHJEeJXEOfaEncmbjsgIxeTPm9FTiDKDOPnjQNh1dIR27BDkoAF/IEjeaFy4bQ==
+  dependencies:
+    eventsource "^1.0.7"
+    request "^2.88.0"
+    ws "^6.0.0"
+
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.4.tgz#d4b3549a5db5de2683e0c1071ab4f140904bbf69"
@@ -9972,6 +9981,13 @@ redent@^3.0.0:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
 
+redux-signalr@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/redux-signalr/-/redux-signalr-1.2.0.tgz#9b91424f8eca12a89536a3ff7ac80e89b62267c5"
+  integrity sha512-xX8AF0fboWXJDsMRA0TDjGRmKPlzfBjeX3rJ5P0vxsvRzrY9LUIdHJ6xaiVnZD02jd450Xyk0vbmxEUJqfKucg==
+  dependencies:
+    "@microsoft/signalr" "^3.1.4"
+
 redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
@@ -12333,7 +12349,7 @@ write-file-atomic@^3.0.0:
     signal-exit "^3.0.2"
     typedarray-to-buffer "^3.1.5"
 
-ws@^6.2.1:
+ws@^6.0.0, ws@^6.2.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.1.tgz#442fdf0a47ed64f59b6a5d8ff130f4748ed524fb"
   integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
