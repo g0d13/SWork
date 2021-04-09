@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -16,6 +16,7 @@ import {
   fetchCategories,
   selectAll as selectAllCategories,
 } from "../../store/categoriesSlice";
+import { useDispatch } from "react-redux";
 import {
   getUsers,
   selectAll as selectAllMechanics,
@@ -24,6 +25,8 @@ import useUiTitle from "../../hooks/useUiTitle";
 import * as yup from "yup";
 import useStateFetch from "../../hooks/useStateFetch";
 import { useFormik } from "formik";
+import { postLog } from "../../store/logsSlice";
+import TextInput from "../../components/TextInput";
 
 const useStyles = makeStyles({
   blockWidth: {
@@ -46,8 +49,6 @@ const validationSchema = yup.object({
     .string()
     .min(2, "Detalles muy corto")
     .max(500, "Detalles es muy largo"),
-  categories: yup.array().required(),
-  mechanic: yup.string(),
 });
 
 const LogModify = (props) => {
@@ -65,6 +66,8 @@ const LogModify = (props) => {
   useStateFetch(categoriesList, fetchCategories());
   useStateFetch(mechanicsList, getUsers());
 
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -74,18 +77,19 @@ const LogModify = (props) => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      const postLog = {
+      const log = {
         ...values,
         categories: selectedCategories.map((el) => el.categoryId),
         mechanic: selectedMechanic[0].id,
       };
       if (props.id) {
         const updateLog = {
-          ...postLog,
+          ...log,
           logId: props.id,
         };
+        console.log(updateLog);
       } else {
-        // create log
+        dispatch(postLog(log));
       }
     },
   });
@@ -97,28 +101,10 @@ const LogModify = (props) => {
           <Typography className={classes.label}>Datos generales</Typography>
         </Grid>
         <Grid item xs={12} sm={6} className={classes.blockWidth}>
-          <TextField
-            variant="outlined"
-            name="name"
-            fullWidth
-            label="Nombre "
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name && formik.errors.name}
-          />
+          <TextInput name="name" label="Nombre" formik={formik} />
         </Grid>
         <Grid item xs={12} sm={6} className={classes.blockWidth}>
-          <TextField
-            variant="outlined"
-            fullWidth
-            label="Detalles"
-            name="details"
-            value={formik.values.details}
-            onChange={formik.handleChange}
-            error={formik.touched.details && Boolean(formik.errors.details)}
-            helperText={formik.touched.details && formik.errors.details}
-          />
+          <TextInput label="Detalles" name="details" formik={formik} />
         </Grid>
         <Grid item xs={12} sm={6} className={classes.blockWidth}>
           <Typography color="textSecondary">Categorias</Typography>
