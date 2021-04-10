@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const uiInitialState = {
   title: "Inicio",
+  actions: [],
   shouldExit: false,
 };
 
@@ -12,6 +13,9 @@ const slice = createSlice({
     modifyUiTitle: (state, action) => {
       state.title = action.payload;
     },
+    modifyActions: (state, action) => {
+      state.actions = action.payload;
+    },
     toggleShouldExit: (state, action) => {
       state.shouldExit = action.payload;
     },
@@ -19,6 +23,6 @@ const slice = createSlice({
   extraReducers: {},
 });
 
-export const { modifyUiTitle, toggleShouldExit } = slice.actions;
+export const { modifyUiTitle, modifyActions, toggleShouldExit } = slice.actions;
 
 export default slice.reducer;
