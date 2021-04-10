@@ -7,14 +7,17 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemSecondaryAction,
   ListItemText,
   TextField,
   Typography,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { Close } from "@material-ui/icons";
+import { Close, Edit } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect, useState } from "react";
+import { useNavigate } from "@reach/router";
+import useUiTitle from "../hooks/useUiTitle";
 
 const useStyles = makeStyles({
   displayTitle: {
@@ -48,16 +51,25 @@ const useStyles = makeStyles({
 });
 
 const SearchAdd = (props) => {
-  const classes = useStyles();
-
   const { selectedItems, visible, config } = props;
   const [selected, onSelect] = selectedItems;
   const [open, onClose] = visible;
-  const { searchIn, itemKey, textKey, onlyOne, title } = config;
+  const {
+    searchIn,
+    itemKey,
+    textKey,
+    onlyOne,
+    title,
+    addLink,
+    editLink,
+  } = config;
 
   // local state to perform filtering
   const [items, setItems] = useState([]);
   const [searchText, setSearchText] = useState("");
+
+  const classes = useStyles();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // remove duplicated elements
@@ -90,7 +102,6 @@ const SearchAdd = (props) => {
   };
   // TODO: finish search element
   const handleOnSearch = (element) => {};
-
   return (
     <Drawer onClose={(v) => onClose(v)} anchor="bottom" open={open}>
       <DialogTitle className={classes.displayTitle}>
@@ -126,16 +137,25 @@ const SearchAdd = (props) => {
         <List>
           <ListItem button>
             <ListItemText
+              onClick={() => navigate(addLink)}
               className={classes.listText}
               primary={`Agregar ${title}`}
             />
           </ListItem>
-          {items.map((el) => (
+          {items.slice(0, 3).map((el) => (
             <ListItem button onClick={() => onSelectItem(el)} key={el[itemKey]}>
               <ListItemText
                 className={classes.listText}
                 primary={el[textKey]}
               />
+              <ListItemSecondaryAction>
+                <IconButton
+                  edge="end"
+                  onClick={() => navigate(`${editLink}/${el[itemKey]}`)}
+                >
+                  <Edit />
+                </IconButton>
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
@@ -153,6 +173,8 @@ SearchAdd.propTypes = {
     itemKey: PropTypes.string,
     textKey: PropTypes.string,
     onlyOne: PropTypes.bool,
+    addLink: PropTypes.string,
+    editLink: PropTypes.string,
   }).isRequired,
 };
 export default SearchAdd;
