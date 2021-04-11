@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { modifyUiTitle } from "../store/uiSlice";
+import { modifyUiTitle, modifyActions } from "../store/slices/ui";
 
-const useUiTitle = (title) => {
+const useUiTitle = (title, actions) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(modifyUiTitle(title));
-  }, [dispatch, title]);
+    dispatch(modifyActions(actions));
+  }, [dispatch, title, actions]);
 };
 
 export default useUiTitle;
