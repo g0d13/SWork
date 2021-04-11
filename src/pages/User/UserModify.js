@@ -50,7 +50,7 @@ const UserModify = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => selectById(state, props.id));
-  const [role, setRole] = useState();
+  const [role, setRole] = useState("Mechanic");
 
   useUiTitle(
     props.id ? `Editar ${user.firstName}` : "Agregar usuario",
@@ -81,6 +81,7 @@ const UserModify = (props) => {
       } else {
         dispatch(createUser({ ...values, role }));
       }
+      navigate(-1);
     },
   });
 
@@ -107,11 +108,11 @@ const UserModify = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography className={classes.label}>Datos generales</Typography>
+            <Typography className={classes.label}>Rol</Typography>
             <ChipSelector
               items={["Mechanic", "Supervisor"]}
               selected={user?.role ?? "Mechanic"}
-              onSelect={(e) => setRole(e)}
+              onSelect={setRole}
             />
           </Grid>
           <Grid item xs={12} className={classes.blockWidth}>
