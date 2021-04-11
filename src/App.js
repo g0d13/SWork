@@ -13,6 +13,8 @@ import UserModify from "./pages/User/UserModify";
 import Notifications from "./pages/Notifications";
 import NotifyDetails from "./pages/Notify/NotifyDetails";
 import Request from "./pages/Log/Request";
+import MachineModify from "./pages/Machine/MachineModify";
+import CategoryModify from "./pages/Category/CategoryModify";
 
 function App() {
   return (
@@ -24,9 +26,17 @@ function App() {
             <LogModify path="/log/add" />
             <LogModify path="/log/:id" />
             <Request path="/log/request/:id" />
+
             <Users path="/users" />
             <UserModify path="/users/add" />
             <UserModify path="/users/:id" />
+
+            <MachineModify path="/machines/add" />
+            <MachineModify path="/machines/:id" />
+
+            <CategoryModify path="/category/add" />
+            <CategoryModify path="/category/:id" />
+
             <Notifications path="/notifications" />
             <NotifyDetails path="/notify/:id" />
           </Layout>
