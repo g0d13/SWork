@@ -19,13 +19,39 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
+export const postCategory = createAsyncThunk(
+  `${module_name}/postCategory`,
+  async (data) => {
+    const response = await httpClient.post("/api/category", data);
+    return response.data;
+  }
+);
+
+export const putCategory = createAsyncThunk(
+  `${module_name}/putCategory`,
+  async (data) => {
+    await httpClient.put(`/api/category/${data.categoryId}`, data);
+    return data;
+  }
+);
+
 const slice = createSlice({
   name: module_name,
   initialState: categoriesAdapter.getInitialState({}),
   reducers: {},
   extraReducers: {
-    [fetchCategories.fulfilled]: (state, { meta, payload }) => {
+    [fetchCategories.fulfilled]: (state, { payload }) => {
       categoriesAdapter.setAll(state, payload);
+    },
+    [postCategory.fulfilled]: (state, { payload }) => {
+      categoriesAdapter.addOne(state, payload);
+    },
+    [putCategory.fulfilled]: (state, { payload }) => {
+      const { categoryId, ...category } = payload;
+      categoriesAdapter.updateOne(state, {
+        id: categoryId,
+        changes: { ...category },
+      });
     },
   },
 });

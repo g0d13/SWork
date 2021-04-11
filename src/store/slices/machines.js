@@ -23,14 +23,14 @@ export const postMachine = createAsyncThunk(
   `${module_name}/postMachine`,
   async (data) => {
     const response = await httpClient.post("/api/machine", data);
-    return data;
+    return response.data;
   }
 );
 
 export const putMachine = createAsyncThunk(
   `${module_name}/putMachine`,
   async (data) => {
-    const response = await httpClient.put("/api/machine", data);
+    await httpClient.put(`/api/machine/${data.machineId}`, data);
     return data;
   }
 );
@@ -40,13 +40,13 @@ const machineSlice = createSlice({
   initialState: machinesAdapter.getInitialState({}),
   reducers: {},
   extraReducers: {
-    [fetchMachines.fulfilled]: (state, { meta, payload }) => {
+    [fetchMachines.fulfilled]: (state, { payload }) => {
       machinesAdapter.setAll(state, payload);
     },
-    [postMachine.fulfilled]: (state, { meta, payload }) => {
+    [postMachine.fulfilled]: (state, { payload }) => {
       machinesAdapter.addOne(state, payload);
     },
-    [putMachine.fulfilled]: (state, { meta, payload }) => {
+    [putMachine.fulfilled]: (state, { payload }) => {
       machinesAdapter.updateOne(state, payload);
     },
   },

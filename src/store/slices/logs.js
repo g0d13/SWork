@@ -12,7 +12,7 @@ export const logsAdapter = createEntityAdapter({
 });
 
 export const fetchLogs = createAsyncThunk(
-  `${module_name}/getLogs`,
+  `${module_name}/fetchLogs`,
   async () => {
     const { data } = await httpClient.get("/api/log");
     return data;
@@ -27,11 +27,26 @@ export const postLog = createAsyncThunk(
   }
 );
 
+export const putLog = createAsyncThunk(
+  `${module_name}/putLog`,
+  async (data) => {
+    const response = await httpClient.put(`/api/log/${data.logId}`, data);
+    return response.data;
+  }
+);
+
 export const deleteLog = createAsyncThunk(
   `${module_name}/deleteLog`,
   async (id) => {
-    const response = await httpClient.delete(`/api/log${id}`);
+    await httpClient.delete(`/api/log/${id}`);
     return id;
+  }
+);
+
+export const postLogRequest = createAsyncThunk(
+  `${module_name}/postLogRequest`,
+  async (data) => {
+    return await httpClient.post("/api/Request", data);
   }
 );
 
@@ -43,14 +58,22 @@ const logSlice = createSlice({
     [fetchLogs.pending]: (state) => {
       state.status = "loading";
     },
-    [fetchLogs.fulfilled]: (state, { meta, payload }) => {
+    [fetchLogs.fulfilled]: (state, { payload }) => {
       logsAdapter.setAll(state, payload);
       state.status = "ok";
     },
-    [postLog.fulfilled]: (state, { meta, payload }) => {
+    [putLog.fulfilled]: (state, { payload }) => {
+      const { logId, ...log } = payload;
+      logsAdapter.updateOne(state, { id: logId, changes: { ...log } });
+    },
+    [postLog.fulfilled]: (state, { payload }) => {
       logsAdapter.addOne(state, payload);
       state.status = "ok";
     },
+    [deleteLog.fulfilled]: (state, { meta, payload }) => {
+      logsAdapter.removeOne(state, payload);
+    },
+    [postLogRequest.fulfilled]: () => {},
   },
 });
 

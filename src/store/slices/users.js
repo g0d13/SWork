@@ -51,7 +51,8 @@ const users = createSlice({
     [getUsers.fulfilled]: (state, { payload }) => {
       usersAdapter.setAll(state, payload);
     },
-    [createUser.fulfilled]: (state) => {
+    [createUser.fulfilled]: (state, { payload }) => {
+      usersAdapter.addOne(state, payload);
       state.status = "ok";
     },
     [createUser.rejected]: (state) => {
