@@ -17,7 +17,7 @@ import { Close, Edit } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect, useState } from "react";
 import { useNavigate } from "@reach/router";
-import useUiTitle from "../hooks/useUiTitle";
+import uniqueValues from "../utils/uniqueValues";
 
 const useStyles = makeStyles({
   displayTitle: {
@@ -71,33 +71,26 @@ const SearchAdd = (props) => {
   const classes = useStyles();
   const navigate = useNavigate();
 
+  // remove duplicate items
   useEffect(() => {
-    // remove duplicated elements
-    const tmpItems = [
-      ...new Map(
-        [...selected, ...searchIn].map((item) => [item[itemKey], item])
-      ).values(),
-    ];
+    console.log({ selected, searchIn });
+    let values = uniqueValues([...selected, ...searchIn], itemKey);
+    setItems([...values]);
+  }, [selected, searchIn]);
 
-    // set value from props
-    setItems(tmpItems);
-  }, [searchIn]);
-
+  // remove from list item and add to selected list
   const onSelectItem = (item) => {
-    // avoid pushing more elements if onlyOne is selected
+    // avoid pushing more elements if onlyOne prop is selected
     if (onlyOne && selected.length === 1) {
       return;
     }
-    // remove from list item
     setItems(items.filter((e) => e[itemKey] !== item[itemKey]));
-    // add to selected list
     onSelect([...selected, item]);
   };
 
+  // add to list item and remove from selected list
   const onDeleteItem = (item) => {
-    // add to list item
     setItems((prev) => [item, ...prev]);
-    // remove from selected list
     onSelect(selected.filter((e) => e[itemKey] !== item[itemKey]));
   };
   // TODO: finish search element
@@ -142,7 +135,7 @@ const SearchAdd = (props) => {
               primary={`Agregar ${title}`}
             />
           </ListItem>
-          {items.slice(0, 3).map((el) => (
+          {items.slice(0, 5).map((el) => (
             <ListItem button onClick={() => onSelectItem(el)} key={el[itemKey]}>
               <ListItemText
                 className={classes.listText}
