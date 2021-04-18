@@ -15,7 +15,6 @@ import ConfirmDialog from "./ConfirmDialog";
 import { useDispatch } from "react-redux";
 import { deleteLog } from "../store/slices/logs";
 import { useSelector } from "react-redux";
-import cr from "../utils/rolesValues";
 import Permission from "./Permission";
 
 const useStyles = makeStyles({
@@ -30,7 +29,6 @@ const LogItem = ({ log }) => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [openDialog, setOpenDialog] = useState();
-  const role = useSelector((state) => state.auth.user.role);
   const dispatch = useDispatch();
 
   const handleClickCard = () => {
