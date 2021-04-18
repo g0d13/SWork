@@ -5,21 +5,22 @@ import {
   Chip,
   Grid,
   IconButton,
-  TextField,
   Typography,
 } from "@material-ui/core";
+import * as yup from "yup";
+import { useFormik } from "formik";
 import { Add } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import ChipSelector from "../../components/ChipSelector";
 import SearchAdd from "../../components/SearchAdd";
 import { fetchMachines, selectAll } from "../../store/slices/machines";
 import useUiTitle from "../../hooks/useUiTitle";
 import useStateFetch from "../../hooks/useStateFetch";
-import * as yup from "yup";
-import { useFormik } from "formik";
 import TextInput from "../../components/TextInput";
+import { postLogRequest } from "../../store/slices/logs";
+import { useNavigate } from "@reach/router";
 
 const useStyles = makeStyles({
   label: {
@@ -57,13 +58,12 @@ const Request = (props) => {
   const machineList = useSelector(selectAll);
   const [selectedMachines, setSelectedMachines] = useState([]);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useUiTitle("Crear solicitud");
 
   useStateFetch(machineList, fetchMachines());
-
-  const handleSelectedMachines = (machines) => {
-    setSelectedMachines([...machines]);
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -78,7 +78,8 @@ const Request = (props) => {
         priority: priorityList.indexOf(priority),
         machine: selectedMachines[0].machineId,
       };
-      console.log(request);
+      dispatch(postLogRequest(request));
+      navigate(-1);
     },
   });
 
@@ -129,6 +130,8 @@ const Request = (props) => {
                 itemKey: "machineId",
                 textKey: "identifier",
                 onlyOne: true,
+                addLink: "/machines/add",
+                editLink: "/machines",
               }}
             />
           </Box>
