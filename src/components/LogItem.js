@@ -12,6 +12,11 @@ import { useNavigate } from "@reach/router";
 import { makeStyles } from "@material-ui/core/styles";
 import { Edit, Delete } from "@material-ui/icons";
 import ConfirmDialog from "./ConfirmDialog";
+import { useDispatch } from "react-redux";
+import { deleteLog } from "../store/slices/logs";
+import { useSelector } from "react-redux";
+import cr from "../utils/rolesValues";
+import Permission from "./Permission";
 
 const useStyles = makeStyles({
   chips: {
@@ -25,6 +30,8 @@ const LogItem = ({ log }) => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [openDialog, setOpenDialog] = useState();
+  const role = useSelector((state) => state.auth.user.role);
+  const dispatch = useDispatch();
 
   const handleClickCard = () => {
     navigate(`/log/request/${log.logId}`);
@@ -41,18 +48,32 @@ const LogItem = ({ log }) => {
   };
 
   const handleClose = (value) => {
-    if (value) console.log("Se ha borrado de el elemento");
+    if (value) {
+      dispatch(deleteLog(log.logId));
+    }
     setOpenDialog(false);
   };
 
   const actions = (hovered) => (
     <React.Fragment>
-      <IconButton aria-label="settings" size="small" onClick={handleClickEdit}>
-        <Edit fontSize="small" />
-      </IconButton>
-      <IconButton size="small" aria-label="delete" onClick={handleClickDelete}>
-        <Delete fontSize="small" />
-      </IconButton>
+      <Permission permission="log:update">
+        <IconButton
+          aria-label="settings"
+          size="small"
+          onClick={handleClickEdit}
+        >
+          <Edit fontSize="small" />
+        </IconButton>
+      </Permission>
+      <Permission permission="log:delete">
+        <IconButton
+          size="small"
+          aria-label="delete"
+          onClick={handleClickDelete}
+        >
+          <Delete fontSize="small" />
+        </IconButton>
+      </Permission>
     </React.Fragment>
   );
 

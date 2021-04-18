@@ -1,22 +1,16 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Box, Button, Grid, IconButton, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 import { Add } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import SearchAdd from "../../components/SearchAdd";
+import { useDispatch } from "react-redux";
+import { selectById } from "../../store/slices/logs";
 import {
   fetchCategories,
   selectAll as selectAllCategories,
 } from "../../store/slices/categories";
-import { useDispatch } from "react-redux";
 import {
   getUsers,
   selectAll as selectAllMechanics,
@@ -25,8 +19,9 @@ import useUiTitle from "../../hooks/useUiTitle";
 import * as yup from "yup";
 import useStateFetch from "../../hooks/useStateFetch";
 import { useFormik } from "formik";
-import { postLog } from "../../store/slices/logs";
+import { postLog, putLog } from "../../store/slices/logs";
 import TextInput from "../../components/TextInput";
+import { useNavigate } from "@reach/router";
 
 const useStyles = makeStyles({
   blockWidth: {
@@ -53,23 +48,34 @@ const validationSchema = yup.object({
 
 const LogModify = (props) => {
   const classes = useStyles();
+
   const [showCategories, setShowCategories] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const [showMechanics, setShowMechanics] = useState(false);
   const [selectedMechanic, setSelectedMechanic] = useState([]);
 
+  const log = useSelector((state) => selectById(state, props.id));
   const categoriesList = useSelector(selectAllCategories);
   const mechanicsList = useSelector(selectAllMechanics);
+
+  const navigate = useNavigate();
 
   useUiTitle(props.id ? "Editar bitacora" : "Agregar bitacora");
   useStateFetch(categoriesList, fetchCategories());
   useStateFetch(mechanicsList, getUsers());
 
+  useEffect(() => {
+    if (props.id) {
+      setSelectedCategories((p) => log.categories);
+      setSelectedMechanic((p) => [log.mechanic]);
+    }
+  }, [log]);
+
   const dispatch = useDispatch();
 
   const formik = useFormik({
-    initialValues: {
+    initialValues: log || {
       name: "",
       details: "",
       categories: [],
@@ -87,10 +93,11 @@ const LogModify = (props) => {
           ...log,
           logId: props.id,
         };
-        console.log(updateLog);
+        dispatch(putLog(updateLog));
       } else {
         dispatch(postLog(log));
       }
+      navigate(-1);
     },
   });
 
@@ -108,7 +115,7 @@ const LogModify = (props) => {
         </Grid>
         <Grid item xs={12} sm={6} className={classes.blockWidth}>
           <Typography color="textSecondary">Categorias</Typography>
-          <Box>
+          <Box display="flex" gridGap="10px">
             {selectedCategories.map((el) => (
               <Chip label={el.name} variant="outlined" key={el.categoryId} />
             ))}
@@ -127,6 +134,8 @@ const LogModify = (props) => {
                 searchIn: categoriesList,
                 itemKey: "categoryId",
                 textKey: "name",
+                addLink: "/category/add",
+                editLink: "/category",
               }}
             />
           </Box>
@@ -135,7 +144,7 @@ const LogModify = (props) => {
           <Typography className={classes.label}>Mecanico encargado</Typography>
           <Box>
             {selectedMechanic.map((el) => (
-              <Chip label={el.firstName} variant="outlined" />
+              <Chip label={el.firstName} variant="outlined" key={el.id} />
             ))}
             <IconButton
               color="primary"
@@ -153,6 +162,8 @@ const LogModify = (props) => {
                 itemKey: "id",
                 textKey: "firstName",
                 onlyOne: true,
+                addLink: "/users/add",
+                editLink: "/users",
               }}
             />
           </Box>
