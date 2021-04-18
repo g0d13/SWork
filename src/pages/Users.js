@@ -15,6 +15,7 @@ import { selectAll, getUsers } from "../store/slices/users";
 import { makeStyles } from "@material-ui/core/styles";
 import useUiTitle from "../hooks/useUiTitle";
 import useStateFetch from "../hooks/useStateFetch";
+import UserAvatar from "../components/UserAvatar";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -33,12 +34,6 @@ const Users = () => {
 
   const userList = useSelector(selectAll);
 
-  const getInitials = (name) =>
-    name
-      .split(" ")
-      .map((e) => e[0])
-      .join("");
-
   useUiTitle("Usuarios");
 
   useStateFetch(userList, getUsers());
@@ -54,7 +49,7 @@ const Users = () => {
               key={index}
             >
               <ListItemAvatar>
-                <Avatar>{getInitials(el.firstName)}</Avatar>
+                <UserAvatar name={el.firstName} />
               </ListItemAvatar>
               <ListItemText primary={el.firstName} secondary={el.role} />
             </ListItem>
