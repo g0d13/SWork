@@ -4,6 +4,13 @@ import TextInput from "../../components/TextInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import useUiTitle from "../../hooks/useUiTitle";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  postCategory,
+  putCategory,
+  selectById,
+} from "../../store/slices/categories";
+import { useNavigate } from "@reach/router";
 
 const validationSchema = yup.object({
   name: yup.string().required("El nombre es requerido"),
@@ -11,18 +18,24 @@ const validationSchema = yup.object({
 });
 
 const CategoryModify = (props) => {
+  const category = useSelector((state) => selectById(state, props.id));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useUiTitle(props.id ? "Editar categoria" : "Agregar categoria");
   const formik = useFormik({
-    initialValues: {
+    initialValues: category || {
       name: "",
       details: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       if (props.id) {
-        console.log("update category");
+        dispatch(putCategory(values));
       } else {
+        dispatch(postCategory(values));
       }
+      navigate(-1);
     },
   });
   return (
