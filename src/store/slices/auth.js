@@ -45,13 +45,7 @@ export const refreshToken = createAsyncThunk(
 const auth = createSlice({
   name: module_name,
   initialState: initialState,
-  reducers: {
-    getUserData: (state) => {
-      const { jwt, ...user } = JSON.parse(window.localStorage.getItem("user"));
-      state.jwt = jwt;
-      state.user = user;
-    },
-  },
+  reducers: {},
   extraReducers: {
     [doLogin.fulfilled]: (state, { payload }) => {
       let { token, ...user } = payload.data;
