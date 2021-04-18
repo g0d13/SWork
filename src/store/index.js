@@ -7,12 +7,14 @@ import logsReducer from "./slices/logs";
 import uiSlice from "./slices/ui";
 
 import { signal } from "./helpers/signalr";
+import notifications from "./slices/notifications";
 
 const rootReducer = combineReducers({
   users: userReducer,
   machines: machinesReducer,
   categories: categoriesReducer,
   logs: logsReducer,
+  notifications: notifications,
   ui: uiSlice,
   auth: authReducer,
 });
