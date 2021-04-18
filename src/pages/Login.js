@@ -1,13 +1,12 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Card, CardContent, Typography } from "@material-ui/core";
+import { Box, Button, Card, CardContent, Typography } from "@material-ui/core";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doLogin } from "../store/slices/auth";
 import { useNavigate } from "@reach/router";
 import useIsLoggedIn from "../hooks/useIsLoggedIn";
 import TextInput from "../components/TextInput";
-import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +24,11 @@ const useStyles = makeStyles({
       marginTop: "10px",
     },
   },
+  center: {
+    width: "100%",
+    textAlign: "center",
+    color: "red",
+  },
 });
 
 const validationSchema = yup.object({
@@ -41,27 +45,22 @@ const validationSchema = yup.object({
 const Login = () => {
   const classes = useStyles();
   const navigate = useNavigate();
-  useIsLoggedIn(() => {
-    navigate("/home");
+  useIsLoggedIn({
+    ok: () => {
+      navigate("/home");
+    },
   });
 
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
-
+  const loginState = useSelector((state) => state.auth);
   const formik = useFormik({
     initialValues: {
       email: "1234abcd@email.com",
-      password: "1234abcd",
+      password: "abcd1234",
     },
     validationSchema: validationSchema,
     onSubmit: (data) => {
-      dispatch(doLogin(data)).then((e) => {
-        if (e.error?.message) {
-          enqueueSnackbar("Usuario y/o contrasenia incorrecta", {
-            variant: "Error",
-          });
-        }
-      });
+      dispatch(doLogin(data));
     },
   });
 
@@ -77,6 +76,9 @@ const Login = () => {
               formik={formik}
             />
             <TextInput name="password" type="password" formik={formik} />
+            <Box className={classes.center}>
+              <Typography variant="subtitle1">{loginState.message}</Typography>
+            </Box>
             <Button fullWidth color="primary" type="submit">
               Iniciar
             </Button>
