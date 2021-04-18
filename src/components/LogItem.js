@@ -14,7 +14,6 @@ import { Edit, Delete } from "@material-ui/icons";
 import ConfirmDialog from "./ConfirmDialog";
 import { useDispatch } from "react-redux";
 import { deleteLog } from "../store/slices/logs";
-import { useSelector } from "react-redux";
 import Permission from "./Permission";
 
 const useStyles = makeStyles({

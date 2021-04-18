@@ -4,9 +4,14 @@ import { createNotify } from "../../utils/requestNotification";
 
 export const connection = new HubConnectionBuilder()
   .configureLogging(LogLevel.Information)
-  .withUrl("https://localhost:5001/NotificationHub", {
-    logMessageContent: true,
-  })
+  .withUrl(
+    process.env.NODE_ENV === "development"
+      ? "https://localhost:5001/NotificationHub"
+      : "https://sworkapif.herokuapp.com/NotificationHub",
+    {
+      logMessageContent: true,
+    }
+  )
   .build();
 
 const callbacks = withCallbacks()
