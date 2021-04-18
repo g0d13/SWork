@@ -73,7 +73,6 @@ const SearchAdd = (props) => {
 
   // remove duplicate items
   useEffect(() => {
-    console.log({ selected, searchIn });
     let values = uniqueValues([...selected, ...searchIn], itemKey);
     setItems([...values]);
   }, [selected, searchIn]);
