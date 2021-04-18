@@ -4,6 +4,9 @@ import TextInput from "../../components/TextInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import useUiTitle from "../../hooks/useUiTitle";
+import { postMachine, putMachine } from "../../store/slices/machines";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "@reach/router";
 
 const validationSchema = yup.object({
   identifier: yup.string().required("El nombre es requerido"),
@@ -13,6 +16,8 @@ const validationSchema = yup.object({
 
 const MachineModify = (props) => {
   useUiTitle(props.id ? "Editar maquina" : "Agregar maquina");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -23,9 +28,11 @@ const MachineModify = (props) => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       if (props.id) {
-        console.log("update machine");
+        dispatch(putMachine({ machineId: props.id, ...values }));
       } else {
+        dispatch(postMachine(values));
       }
+      navigate(-1);
     },
   });
   return (
