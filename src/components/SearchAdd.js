@@ -51,18 +51,11 @@ const useStyles = makeStyles({
 });
 
 const SearchAdd = (props) => {
-  const { selectedItems, visible, config } = props;
-  const [selected, onSelect] = selectedItems;
+  const { visible, config } = props;
   const [open, onClose] = visible;
-  const {
-    searchIn,
-    itemKey,
-    textKey,
-    onlyOne,
-    title,
-    addLink,
-    editLink,
-  } = config;
+  const { searchIn, textKey, onlyOne, title, apiName, selectedItems } = config;
+  const [selected, onSelect] = selectedItems;
+  const itemKey = "id";
 
   // local state to perform filtering
   const [items, setItems] = useState([]);
@@ -129,7 +122,7 @@ const SearchAdd = (props) => {
         <List>
           <ListItem button>
             <ListItemText
-              onClick={() => navigate(addLink)}
+              onClick={() => navigate(`/${apiName}/add`)}
               className={classes.listText}
               primary={`Agregar ${title}`}
             />
@@ -143,7 +136,7 @@ const SearchAdd = (props) => {
               <ListItemSecondaryAction>
                 <IconButton
                   edge="end"
-                  onClick={() => navigate(`${editLink}/${el[itemKey]}`)}
+                  onClick={() => navigate(`${apiName}/${el[itemKey]}`)}
                 >
                   <Edit />
                 </IconButton>
@@ -157,16 +150,15 @@ const SearchAdd = (props) => {
 };
 
 SearchAdd.propTypes = {
-  selectedItems: PropTypes.array.isRequired,
   visible: PropTypes.array.isRequired,
   config: PropTypes.shape({
+    selectedItems: PropTypes.any.isRequired,
     title: PropTypes.string.isRequired,
     searchIn: PropTypes.array,
     itemKey: PropTypes.string,
     textKey: PropTypes.string,
     onlyOne: PropTypes.bool,
-    addLink: PropTypes.string,
-    editLink: PropTypes.string,
+    apiLink: PropTypes.string,
   }).isRequired,
 };
 export default SearchAdd;
