@@ -17,6 +17,8 @@ import Drawer from "./Drawer";
 import { requestPermission } from "../utils/requestNotification";
 import Permission from "../components/Permission";
 
+import { ReactQueryDevtools } from "react-query/devtools";
+
 requestPermission();
 
 const useStyles = makeStyles((theme) => ({
@@ -43,12 +45,11 @@ const Layout = (props) => {
     },
   });
 
-  const getButtonNavigation = () => {};
-
   return (
     <ThemeProvider theme={light}>
       <CssBaseline />
       <Appbar />
+      <ReactQueryDevtools initialIsOpen={false} />
       <Container className={classes.container}>{props.children}</Container>
       <Drawer />
       <BottomNavigation
@@ -60,18 +61,16 @@ const Layout = (props) => {
         showLabels
       >
         {links.map(({ title, key, icon, route, permission }) => (
-          <Permission permission={permission} key={key}>
-            <BottomNavigationAction
-              key={key}
-              label={title}
-              value={route}
-              icon={icon}
-              onClick={() => {
-                setValue(route);
-                navigate(route);
-              }}
-            />
-          </Permission>
+          <BottomNavigationAction
+            key={key}
+            label={title}
+            value={route}
+            icon={icon}
+            onClick={() => {
+              setValue(route);
+              navigate(route);
+            }}
+          />
         ))}
       </BottomNavigation>
     </ThemeProvider>
