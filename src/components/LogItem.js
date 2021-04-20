@@ -31,12 +31,12 @@ const LogItem = ({ log }) => {
   const dispatch = useDispatch();
 
   const handleClickCard = () => {
-    navigate(`/log/request/${log.logId}`);
+    navigate(`/log/request/${log.id}`);
   };
 
   const handleClickEdit = (event) => {
     event.stopPropagation();
-    navigate(`/log/${log.logId}`);
+    navigate(`/log/${log.id}`);
   };
 
   const handleClickDelete = (event) => {
@@ -46,7 +46,7 @@ const LogItem = ({ log }) => {
 
   const handleClose = (value) => {
     if (value) {
-      dispatch(deleteLog(log.logId));
+      dispatch(deleteLog(log.id));
     }
     setOpenDialog(false);
   };
