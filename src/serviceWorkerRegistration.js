@@ -54,10 +54,49 @@ export function register(config) {
   }
 }
 
+function urlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+async function subscribeUser() {
+  const { VAPID_PUBLIC_KEY } = await fetch(
+    "http://localhost:3030/api/notify/preload/id"
+  ).then((response) => response.json());
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.ready.then(function (reg) {
+      reg.pushManager
+        .subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+        })
+        .then(function (sub) {
+          console.log("Endpoint URL: ", sub.endpoint);
+        })
+        .catch(function (e) {
+          if (Notification.permission === "denied") {
+            console.warn("Permission for notifications was denied");
+          } else {
+            console.error("Unable to subscribe to push", e);
+          }
+        });
+    });
+  }
+}
+
 function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
+      console.log("Service Worker Registered!", registration);
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -92,6 +131,21 @@ function registerValidSW(swUrl, config) {
           }
         };
       };
+      registration.pushManager
+        .getSubscription()
+        .then(function (sub) {
+          if (sub === null) {
+            // Update UI to ask user to register for Push
+            console.log("Not subscribed to push service!");
+            subscribeUser();
+          } else {
+            // We have a subscription, update the database
+            console.log("Subscription object: ", sub);
+          }
+        })
+        .catch(function (err) {
+          console.log("Service Worker registration failed: ", err);
+        });
     })
     .catch((error) => {
       console.error("Error during service worker registration:", error);
