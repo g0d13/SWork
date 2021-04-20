@@ -15,12 +15,25 @@ const postLog = async (data) => {
   return response.data;
 };
 
-const postLogWithData = async ({ method, data, mechanic, categories }) => {
-  const response = await httpClient[method]("/api/log", data);
+const postLogWithData = async ({ data, mechanic, categories }) => {
+  const response = await httpClient.post("/api/log", data);
   const logId = response.data.id;
   return Promise.all([
-    await httpClient.post(`/api/log/${logId}/mechanic/${mechanic}`),
-    await httpClient.post(`/api/log/${logId}/categories`, categories),
+    mechanic ??
+      (await httpClient.post(`/api/log/${logId}/mechanic/${mechanic}`)),
+    categories ??
+      (await httpClient.post(`/api/log/${logId}/categories`, categories)),
+    await httpClient.get(`/api/log/${logId}`),
+  ]);
+};
+
+const putLogWithData = async ({ logId, data, mechanic, categories }) => {
+  return Promise.all([
+    await httpClient.put(`/api/log/${logId}`, data),
+    mechanic ??
+      (await httpClient.post(`/api/log/${logId}/mechanic/${mechanic}`)),
+    categories ??
+      (await httpClient.post(`/api/log/${logId}/categories`, categories)),
     await httpClient.get(`/api/log/${logId}`),
   ]);
 };
@@ -53,6 +66,7 @@ const deleteLog = async (id) => {
 export {
   fetchLogs,
   postLogWithData,
+  putLogWithData,
   postLog,
   putLog,
   deleteLog,
