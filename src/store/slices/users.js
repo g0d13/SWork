@@ -12,7 +12,7 @@ export const usersAdapter = createEntityAdapter();
 export const getUsers = createAsyncThunk(
   `${module_name}/getUsers`,
   async () => {
-    const response = await httpClient.get("/api/users");
+    const response = await httpClient.get("/api/user");
     return response.data;
   }
 );
@@ -28,7 +28,7 @@ export const createUser = createAsyncThunk(
 export const updateUser = createAsyncThunk(
   `${module_name}/updateUser`,
   async (id, data) => {
-    const response = await httpClient.put(`/api/users/${id}`, data);
+    const response = await httpClient.put(`/api/user/${id}`, data);
     return response.data;
   }
 );
@@ -36,7 +36,7 @@ export const updateUser = createAsyncThunk(
 export const deleteUser = createAsyncThunk(
   `${module_name}/deleteUser`,
   async (id) => {
-    await httpClient.delete(`/api/users/${id}`);
+    await httpClient.delete(`/api/user/${id}`);
     return id;
   }
 );
