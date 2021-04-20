@@ -3,8 +3,10 @@ import Layout from "../layout/Layout";
 import Logs from "../pages/Logs";
 import Users from "../pages/Users";
 import Login from "../pages/Login";
-import LogModify from "../pages/Log/LogModify";
-import UserModify from "../pages/User/UserModify";
+import LogUpdate from "../pages/Log/LogUpdate";
+import LogCreate from "../pages/Log/LogCreate";
+import UserUpdate from "../pages/User/UserUpdate";
+import UserCreate from "../pages/User/UserCreate";
 import Notifications from "../pages/Notifications";
 import NotifyDetails from "../pages/Notify/NotifyDetails";
 import RepairDetails from "../pages/Notify/RepairDetails";
@@ -12,20 +14,22 @@ import RequestDetails from "../pages/Notify/RequestDetails";
 import Request from "../pages/Log/Request";
 import MachineModify from "../pages/Machine/MachineModify";
 import CategoryModify from "../pages/Category/CategoryModify";
-import { Router } from "@reach/router";
+import { Router, Redirect } from "@reach/router";
 
 const Routes = () => (
   <React.Fragment>
     <Router>
-      <Layout path="/" redirect="/home">
+      <Layout path="/">
+        <Redirect noThrow from="/" to="/home" />
+
         <Logs path="/home" />
-        <LogModify path="/log/add" />
-        <LogModify path="/log/:id" />
+        <LogCreate path="/log/add" />
+        <LogUpdate path="/log/:id" />
         <Request path="/log/request/:id" />
 
         <Users path="/users" />
-        <UserModify path="/users/add" />
-        <UserModify path="/users/:id" />
+        <UserCreate path="/users/add" />
+        <UserUpdate path="/users/:id" />
 
         <MachineModify path="/machines/add" />
         <MachineModify path="/machines/:id" />
