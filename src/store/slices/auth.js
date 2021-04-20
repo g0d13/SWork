@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import httpClient from "../../api/httpClient";
-import { connection } from "../helpers/signalr";
 
 const module_name = "auth";
 
@@ -19,10 +18,9 @@ const initialState = {
 export const doLogin = createAsyncThunk(
   `${module_name}/doLogin`,
   async (data) => {
-    const response = await httpClient.post("/api/Auth/Login", data);
+    const response = await httpClient.post("/api/auth/login", data);
     const token = response.data.token;
     httpClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    connection.invoke("OnConnectionReady", response.data.id).catch(() => {});
     return response;
   }
 );
@@ -31,7 +29,7 @@ export const refreshToken = createAsyncThunk(
   `${module_name}/refreshToken`,
   async () => {
     const response = httpClient.post(
-      "/api/Auth/RefreshToken",
+      "/api/auth/RefreshToken",
       {},
       { withCredentials: true }
     );

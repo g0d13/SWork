@@ -7,9 +7,7 @@ import httpClient from "../../api/httpClient";
 
 const module_name = "logs";
 
-export const logsAdapter = createEntityAdapter({
-  selectId: (model) => model.logId,
-});
+export const logsAdapter = createEntityAdapter();
 
 export const fetchLogs = createAsyncThunk(
   `${module_name}/fetchLogs`,

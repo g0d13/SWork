@@ -23,10 +23,6 @@ const Drawer = () => {
   let userData = useSelector((state) => state.auth.user);
   const drawer = useSelector((state) => state.ui.openDrawer);
 
-  useEffect(() => {
-    dispatch(getUserData());
-  }, [dispatch]);
-
   const navigateTo = (route) => {
     dispatch(toggleDrawer(!drawer));
     navigate(route);

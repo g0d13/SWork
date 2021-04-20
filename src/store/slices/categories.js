@@ -7,9 +7,7 @@ import httpClient from "../../api/httpClient";
 
 const module_name = "categories";
 
-export const categoriesAdapter = createEntityAdapter({
-  selectId: (model) => model.categoryId,
-});
+export const categoriesAdapter = createEntityAdapter();
 
 export const fetchCategories = createAsyncThunk(
   `${module_name}/fetchCategories`,

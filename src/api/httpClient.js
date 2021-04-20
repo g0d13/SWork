@@ -1,7 +1,7 @@
 import axios from "axios";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-  axios.defaults.baseURL = "https://192.168.8.113:5001";
+  axios.defaults.baseURL = "http://localhost:3030";
 } else {
   axios.defaults.baseURL = "https://sworkapif.herokuapp.com";
 }

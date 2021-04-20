@@ -6,7 +6,6 @@ import categoriesReducer from "./slices/categories";
 import logsReducer from "./slices/logs";
 import uiSlice from "./slices/ui";
 
-import { signal } from "./helpers/signalr";
 import notifications from "./slices/notifications";
 
 const rootReducer = combineReducers({
@@ -25,5 +24,5 @@ export default configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(signal),
+    }),
 });

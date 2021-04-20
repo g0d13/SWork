@@ -7,9 +7,7 @@ import httpClient from "../../api/httpClient";
 
 const module_name = "machines";
 
-export const machinesAdapter = createEntityAdapter({
-  selectId: (model) => model.machineId,
-});
+export const machinesAdapter = createEntityAdapter();
 
 export const fetchMachines = createAsyncThunk(
   `${module_name}/fetchMachines`,

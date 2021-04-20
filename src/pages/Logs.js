@@ -35,7 +35,7 @@ const Logs = () => {
       <Typography>Logs </Typography>
       <Grid container spacing={3}>
         {logList.map((el, index) => (
-          <Grid item xs={12} sm={6} lg={4} key={el.logId}>
+          <Grid item xs={12} sm={6} lg={4} key={el.id}>
             <LogItem log={el} />
           </Grid>
         ))}
