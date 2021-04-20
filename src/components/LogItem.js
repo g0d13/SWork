@@ -80,19 +80,23 @@ const LogItem = ({ log }) => {
         <CardActionArea component="div">
           <CardHeader
             title={log.name}
-            subheader={log.mechanic.firstName}
+            subheader={log?.mechanic?.firstName || "Sin mecanico encargado"}
             action={actions()}
           />
           <CardContent>
             <Box className={classes.chips}>
-              {log.categories.map((el) => (
-                <Chip
-                  label={el.name}
-                  size="small"
-                  variant="outlined"
-                  key={el.categoryId}
-                />
-              ))}
+              {log.categories.length === 0 ? (
+                <Chip label={"Sin categorias definidas"} size="small" />
+              ) : (
+                log.categories.map((el) => (
+                  <Chip
+                    label={el.name}
+                    size="small"
+                    variant="outlined"
+                    key={el.categoryId}
+                  />
+                ))
+              )}
             </Box>
           </CardContent>
         </CardActionArea>

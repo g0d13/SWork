@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Avatar,
   Fab,
   List,
   ListItem,
@@ -9,13 +8,13 @@ import {
 } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import { useNavigate } from "@reach/router";
-import { useSelector } from "react-redux";
-
-import { selectAll, getUsers } from "../store/slices/users";
 import { makeStyles } from "@material-ui/core/styles";
+import { useQuery } from "react-query";
+
 import useUiTitle from "../hooks/useUiTitle";
-import useStateFetch from "../hooks/useStateFetch";
 import UserAvatar from "../components/UserAvatar";
+
+import httpClient from "../api/httpClient";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -31,17 +30,20 @@ const useStyles = makeStyles((theme) => ({
 const Users = () => {
   const navigate = useNavigate();
   const classes = useStyles();
-
-  const userList = useSelector(selectAll);
+  const { isLoading, error, data } = useQuery("users", async () => {
+    const response = await httpClient.get("api/user");
+    return response.data;
+  });
 
   useUiTitle("Usuarios");
 
-  useStateFetch(userList, getUsers());
+  if (isLoading) return <p>Cargando</p>;
+  if (error) return navigate("/login");
 
   return (
     <React.Fragment>
       <List className={classes.listContainer}>
-        {userList.map((el, index) => {
+        {data.map((el, index) => {
           return (
             <ListItem
               button
