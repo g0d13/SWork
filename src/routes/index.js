@@ -13,7 +13,10 @@ import RepairDetails from "../pages/Notify/RepairDetails";
 import RequestDetails from "../pages/Notify/RequestDetails";
 import Request from "../pages/Log/Request";
 import MachineModify from "../pages/Machine/MachineModify";
-import CategoryModify from "../pages/Category/CategoryModify";
+import {
+  CategoryUpdate,
+  CategoryCreate,
+} from "../pages/Category/CategoryModify";
 import { Router, Redirect } from "@reach/router";
 
 const Routes = () => (
@@ -28,14 +31,14 @@ const Routes = () => (
         <Request path="/log/request/:id" />
 
         <Users path="/users" />
-        <UserCreate path="/users/add" />
-        <UserUpdate path="/users/:id" />
+        <UserCreate path="/user/add" />
+        <UserUpdate path="/user/:id" />
 
         <MachineModify path="/machines/add" />
         <MachineModify path="/machines/:id" />
 
-        <CategoryModify path="/category/add" />
-        <CategoryModify path="/category/:id" />
+        <CategoryCreate path="/category/add" />
+        <CategoryUpdate path="/category/:id" />
 
         <Notifications path="/notifications" />
         <NotifyDetails path="/notify/:id" />
