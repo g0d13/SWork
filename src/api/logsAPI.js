@@ -27,14 +27,13 @@ const postLogWithData = async ({ data, mechanic, categories }) => {
   ]);
 };
 
-const putLogWithData = async ({ logId, data, mechanic, categories }) => {
+const putLogWithData = async ({ id, data, mechanic, categories }) => {
   return Promise.all([
-    await httpClient.put(`/api/log/${logId}`, data),
-    mechanic ??
-      (await httpClient.post(`/api/log/${logId}/mechanic/${mechanic}`)),
-    categories ??
-      (await httpClient.post(`/api/log/${logId}/categories`, categories)),
-    await httpClient.get(`/api/log/${logId}`),
+    data && (await httpClient.put(`/api/log/${id}`, data)),
+    mechanic && (await httpClient.post(`/api/log/${id}/mechanic/${mechanic}`)),
+    categories &&
+      (await httpClient.post(`/api/log/${id}/categories`, categories)),
+    await httpClient.get(`/api/log/${id}`),
   ]);
 };
 
