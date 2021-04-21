@@ -93,7 +93,7 @@ const LogItem = ({ log }) => {
                     label={el.name}
                     size="small"
                     variant="outlined"
-                    key={el.categoryId}
+                    key={el.id}
                   />
                 ))
               )}
