@@ -10,6 +10,11 @@ const fetchUserById = async (id) => {
   return response.data;
 };
 
+const fetchAllMechanics = async () => {
+  const response = await httpClient.get("/api/user/mechanic");
+  return response.data;
+};
+
 const postUser = async (data) => {
   const response = await httpClient.post("/api/user", data);
   return response.data;
@@ -25,4 +30,11 @@ const deleteUser = async (id) => {
   return response.data;
 };
 
-export { fetchUserById, fetchUsers, postUser, putUser, deleteUser };
+export {
+  fetchUserById,
+  fetchUsers,
+  fetchAllMechanics,
+  postUser,
+  putUser,
+  deleteUser,
+};
