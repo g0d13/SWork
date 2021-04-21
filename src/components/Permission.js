@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import useCr from "../utils/rolesValues";
 
 const Permission = ({ children, permission, accept, reject }) => {
-  const role = useSelector((state) => state.auth.user.role);
+  const { role } = JSON.parse(window.localStorage.getItem("user"));
   const status = useCr(role, permission, accept, reject);
 
   useEffect(() => {
