@@ -23,12 +23,12 @@ const ChipSelector = (props) => {
     <Box className={classes.box}>
       {items.map((i) => (
         <Chip
-          label={i}
+          label={i.label}
           clickable
-          color={selected === i ? "primary" : "default"}
-          onClick={() => handleSetSelected(i)}
+          color={selected === i.value ? "primary" : "default"}
+          onClick={() => handleSetSelected(i.value)}
           variant="outlined"
-          key={i}
+          key={i.value}
         />
       ))}
     </Box>
