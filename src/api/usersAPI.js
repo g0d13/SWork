@@ -20,7 +20,7 @@ const postUser = async (data) => {
   return response.data;
 };
 
-const putUser = async (id, data) => {
+const putUser = async ({ id, ...data }) => {
   const response = await httpClient.put(`/api/user/${id}`, data);
   return response.data;
 };

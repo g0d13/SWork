@@ -15,19 +15,19 @@ const postLog = async (data) => {
   return response.data;
 };
 
-const postLogWithData = async ({ data, mechanic, categories }) => {
+const postLogWithData = async ({ mechanic, categories, ...data }) => {
   const response = await httpClient.post("/api/log", data);
   const logId = response.data.id;
   return Promise.all([
-    mechanic ??
+    mechanic &&
       (await httpClient.post(`/api/log/${logId}/mechanic/${mechanic}`)),
-    categories ??
+    categories &&
       (await httpClient.post(`/api/log/${logId}/categories`, categories)),
     await httpClient.get(`/api/log/${logId}`),
   ]);
 };
 
-const putLogWithData = async ({ id, data, mechanic, categories }) => {
+const putLogWithData = async ({ id, mechanic, categories, ...data }) => {
   return Promise.all([
     data && (await httpClient.put(`/api/log/${id}`, data)),
     mechanic && (await httpClient.post(`/api/log/${id}/mechanic/${mechanic}`)),
