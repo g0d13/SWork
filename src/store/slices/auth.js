@@ -21,6 +21,7 @@ export const doLogin = createAsyncThunk(
     const response = await httpClient.post("/api/auth/login", data);
     const token = response.data.token;
     httpClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    window.localStorage.setItem("user", JSON.stringify(response.data));
     return response;
   }
 );
