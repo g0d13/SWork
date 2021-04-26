@@ -5,7 +5,7 @@ import { Typography, Button, Box, Chip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useQuery } from "react-query";
 import { fetchCategories } from "../../api/categoriesAPI";
-import { fetchUsers } from "../../api/usersAPI";
+import { fetchAllMechanics } from "../../api/usersAPI";
 
 import TextInput from "../../components/TextInput";
 import GridView from "../../components/GridView";
@@ -33,7 +33,7 @@ const validationSchema = yup.object({
     .required("El nombre es requerido"),
   details: yup
     .string()
-    .min(2, "Detalles es muy corto")
+    .min(2, "El campo debe ser mayor a dos caracteres")
     .required("Es requerido colocar detalles"),
 });
 
@@ -46,15 +46,15 @@ const LogForm = ({ defaultValues, onFormSubmit }) => {
     defaultValues.mechanic ? [defaultValues.mechanic] : []
   );
 
-  const mechanicsQuery = useQuery("users", fetchUsers);
+  const mechanicsQuery = useQuery("users", fetchAllMechanics);
   const categororiesQuery = useQuery("categories", fetchCategories);
 
   const formik = useFormik({
     initialValues: defaultValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      const categories = selectedCategories.map((el) => el.id);
-      const mechanic = selectedMechanics[0].id;
+      const categories = selectedCategories[0].map((el) => el.id);
+      const mechanic = selectedMechanics[0][0]?.id;
       onFormSubmit({ ...values, categories, mechanic });
     },
   });
