@@ -11,12 +11,12 @@ import { useMatch, useNavigate } from "@reach/router";
 import {
   ArrowBack,
   Menu,
-  AccountCircle,
-  Notifications,
+  ExitToApp,
 } from "@material-ui/icons";
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDrawer } from "../store/slices/ui";
+import Permission from "../components/Permission";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -46,14 +46,18 @@ const Appbar = () => {
       navigate(-1);
     }
   };
+  const handleLogout = () => {
+    navigate("/login");
+    window.localStorage.removeItem("user");
+  };
 
   const classes = useStyles();
 
   const actions = () => (
     <React.Fragment>
-      <IconButton color="inherit" onClick={() => navigate("/notifications")}>
+      <IconButton color="inherit" onClick={handleLogout}>
         <Badge color="secondary">
-          <Notifications />
+          <ExitToApp />
         </Badge>
       </IconButton>
     </React.Fragment>
