@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../layout/Layout";
 import Logs from "../pages/Logs";
 import Users from "../pages/Users";
@@ -13,41 +13,63 @@ import RepairDetails from "../pages/Notify/RepairDetails";
 import RequestDetails from "../pages/Notify/RequestDetails";
 import Request from "../pages/Log/Request";
 import MachineModify from "../pages/Machine/MachineModify";
+import HistoryList from "../pages/History/HistoryList";
+import HistoryItem from "../pages/History/HistoryItem";
+
 import {
   CategoryUpdate,
   CategoryCreate,
 } from "../pages/Category/CategoryModify";
 import { Router, Redirect } from "@reach/router";
+import { useAuth } from "../hooks/useAuth";
+import Home from "../pages/Home";
 
-const Routes = () => (
-  <React.Fragment>
-    <Router>
-      <Layout path="/">
+const Routes = () => {
+  const userData = useAuth("user");
+
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
+
+  return (
+    <React.Fragment>
+      <Router>
         <Redirect noThrow from="/" to="/home" />
 
-        <Logs path="/home" />
-        <LogCreate path="/log/add" />
-        <LogUpdate path="/log/:id" />
-        <Request path="/log/request/:id" />
+        {JSON.parse(userData) === null ? (
+          <Redirect noThrow from="/home" to="/login" />
+        ) : (
+          <Layout path="/">
+            <Redirect noThrow from="/" to="/home" />
 
-        <Users path="/users" />
-        <UserCreate path="/user/add" />
-        <UserUpdate path="/user/:id" />
+            <Home path="/home" />
+            <LogCreate path="/log/add" />
+            <LogUpdate path="/log/:id" />
+            <Request path="/log/request/:id" />
 
-        <MachineModify path="/machines/add" />
-        <MachineModify path="/machines/:id" />
+            <Users path="/users" />
+            <UserCreate path="/user/add" />
+            <UserUpdate path="/user/:id" />
 
-        <CategoryCreate path="/category/add" />
-        <CategoryUpdate path="/category/:id" />
+            <MachineModify path="/machine/add" />
+            <MachineModify path="/machine/:id" />
 
-        <Notifications path="/notifications" />
-        <NotifyDetails path="/notify/:id" />
-        <RepairDetails path="/notify/repair/:id" />
-        <RequestDetails path="/notify/request/:id" />
-      </Layout>
-      <Login path="/login" />
-    </Router>
-  </React.Fragment>
-);
+            <CategoryCreate path="log/category/add" />
+            <CategoryUpdate path="log/category/:id" />
+
+            <Notifications path="/notifications" />
+            <NotifyDetails path="/notify/:id" />
+            <RepairDetails path="/repair/:id" />
+            <RequestDetails path="/notify/request/:id" />
+
+            <HistoryList path="/history" />
+            <HistoryItem path="/history/:id" />
+          </Layout>
+        )}
+        <Login path="/login" />
+      </Router>
+    </React.Fragment>
+  );
+};
 
 export default Routes;
