@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { modifyUiTitle } from "../store/slices/ui";
 import { fetchNotifications, selectAll } from "../store/slices/notifications";
 import useStateFetch from "../hooks/useStateFetch";
+import useNotify from "../hooks/useNotify";
 
 const Notifications = ({ quantity }) => {
   const navigate = useNavigate();

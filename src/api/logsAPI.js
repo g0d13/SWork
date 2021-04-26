@@ -4,9 +4,18 @@ const fetchLogs = async () => {
   const response = await httpClient.get("/api/log");
   return response.data;
 };
+const fetchDeletedLog = async () => {
+  const response = await httpClient.get("/api/log/del");
+  return response.data;
+};
 
 const fetchLogById = async (id) => {
   const response = await httpClient.get(`/api/log/${id}`);
+  return response.data;
+};
+
+const fetchLogHistory = async (logId) => {
+  const response = await httpClient.get(`/api/request/history/${logId}`);
   return response.data;
 };
 
@@ -63,7 +72,9 @@ const deleteLog = async (id) => {
 };
 
 export {
+  fetchDeletedLog,
   fetchLogs,
+  fetchLogHistory,
   postLogWithData,
   putLogWithData,
   postLog,

@@ -11,17 +11,17 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDrawer } from "../store/slices/ui";
-import { getUserData } from "../store/slices/auth";
-import { links } from "./links";
+import { getLinks } from "./links";
 import UserAvatar from "../components/UserAvatar";
-import { navigate } from "@reach/router";
-import Permission from "../components/Permission";
-import { useEffect } from "react";
+import { useNavigate } from "@reach/router";
+import { useAuth } from "../hooks/useAuth";
 
 const Drawer = () => {
   const dispatch = useDispatch();
-  let userData = useSelector((state) => state.auth.user);
+  const userData = useAuth("user");
+
   const drawer = useSelector((state) => state.ui.openDrawer);
+  let navigate = useNavigate();
 
   const navigateTo = (route) => {
     dispatch(toggleDrawer(!drawer));
@@ -41,23 +41,25 @@ const Drawer = () => {
         flexDirection="row"
         alignItems="center"
       >
-        <UserAvatar name={userData.firstName} />
+        <UserAvatar name={JSON.parse(userData)?.email} />
         <Box paddingLeft="16px" lineHeight="0.1">
-          <Typography variant="h6">{userData.firstName}</Typography>
-          <Typography variant="caption">{userData.role}</Typography>
+          <Typography variant="h6">{JSON.parse(userData)?.email}</Typography>
+          <Typography variant="caption">
+            {JSON.parse(userData)?.role}
+          </Typography>
         </Box>
       </Box>
       <Divider />
       <Box width={275}>
         <List>
-          {links.map(({ route, key, title, icon, permission }) => (
-            <Permission permission={permission} key={key}>
-              <ListItem button onClick={() => navigateTo(route)}>
+          {getLinks(userData?.role).map(
+            ({ route, key, title, icon, permission }) => (
+              <ListItem key={key} button onClick={() => navigateTo(route)}>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText primary={title} />
               </ListItem>
-            </Permission>
-          ))}
+            )
+          )}
         </List>
       </Box>
     </DrawerInternal>

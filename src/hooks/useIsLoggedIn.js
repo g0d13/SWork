@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 
 const useIsLoggedIn = ({ ok, cancel }) => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const token = useSelector((state) => !!state.auth.jwt);
-  const isLoggedUser = user?.token ?? token;
+  const isLoggedUser = user?.token;
 
   useEffect(() => {
     if (isLoggedUser) {

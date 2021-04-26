@@ -1,26 +1,28 @@
 import React, { useState } from "react";
+import * as yup from "yup";
+import { useQueryClient, useMutation, useQueries } from "react-query";
+import { useFormik } from "formik";
+import { useNavigate } from "@reach/router";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
   Button,
   Chip,
-  Grid,
-  IconButton,
+  LinearProgress,
   Typography,
 } from "@material-ui/core";
-import * as yup from "yup";
-import { useFormik } from "formik";
-import { Add } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
 
 import ChipSelector from "../../components/ChipSelector";
-import SearchAdd from "../../components/SearchAdd";
-import { fetchMachines, selectAll } from "../../store/slices/machines";
 import useUiTitle from "../../hooks/useUiTitle";
-import useStateFetch from "../../hooks/useStateFetch";
 import TextInput from "../../components/TextInput";
-import { postLogRequest } from "../../store/slices/logs";
-import { useNavigate } from "@reach/router";
+import Loading from "../../components/Loading";
+import GridView from "../../components/GridView";
+import SearchAddWrapper from "../../components/SearchAddWrapper";
+
+import { fetchMachines } from "../../api/machinesAPI";
+import { fetchLogById } from "../../api/logsAPI";
+import { makeRequest } from "../../api/requestAPI";
+import { priorityList } from "../../utils/constats";
 
 const useStyles = makeStyles({
   label: {
@@ -49,21 +51,23 @@ const validationSchema = yup.object({
     .max(100, "Codigo de problema muy largo"),
 });
 
-const priorityList = ["Baja", "Media", "Alta"];
-
 const Request = (props) => {
   const classes = useStyles();
-  const [priority, setPriority] = useState();
-  const [showMachines, setShowMachines] = useState(false);
-  const machineList = useSelector(selectAll);
-  const [selectedMachines, setSelectedMachines] = useState([]);
+  const [priority, setPriority] = useState("LOW");
+  const showMachine = useState(false);
+  const selectedMachines = useState([]);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useUiTitle("Crear solicitud");
+  const [machines, logs] = useQueries([
+    { queryKey: "machines", queryFn: fetchMachines },
+    { queryKey: ["logs", props.id], queryFn: () => fetchLogById(props.id) },
+  ]);
 
-  useStateFetch(machineList, fetchMachines());
+  const queryClient = useQueryClient();
+  const onSuccess = () => queryClient.invalidateQueries("requests");
+  const newRequest = useMutation("requests", makeRequest, { onSuccess });
 
   const formik = useFormik({
     initialValues: {
@@ -73,75 +77,68 @@ const Request = (props) => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const request = {
-        ...values,
-        log: props.id,
-        priority: priorityList.indexOf(priority),
-        machine: selectedMachines[0].machineId,
+        logId: props.id,
+        priority: priority,
+        machineId: selectedMachines[0][0].id,
       };
-      dispatch(postLogRequest(request));
+      newRequest.mutate({ ...request, ...values });
       navigate(-1);
     },
   });
 
+  if (machines.isLoading) return <Loading />;
+  if (logs.isLoading) return <Loading />;
+
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} className={classes.subtitle}>
-          <Typography className={classes.label}>Datos generales</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextInput
-            name="problemCode"
-            label="Codigo del problema"
-            formik={formik}
+      <GridView>
+        <Typography sm={12} className={classes.label}>
+          Datos generales - {logs.data.details}
+        </Typography>
+        <TextInput
+          name="problemCode"
+          label="Codigo del problema"
+          formik={formik}
+        />
+        <TextInput
+          multiline
+          name="description"
+          label="Descripcion"
+          formik={formik}
+        />
+        <Typography sm={12} className={classes.label}>
+          Prioridad
+        </Typography>
+        <ChipSelector
+          sm={12}
+          items={priorityList}
+          selected={priority}
+          onSelect={setPriority}
+        />
+        <Typography sm={12} className={classes.label}>
+          Maquina
+        </Typography>
+        <Box sm={12} className={classes.chipContainer}>
+          {selectedMachines[0].map((el) => (
+            <Chip key={el.id} label={el.model} variant="outlined" />
+          ))}
+          <SearchAddWrapper
+            show={showMachine}
+            config={{
+              title: "maquina",
+              selectedItems: selectedMachines,
+              searchIn: machines.data,
+              textKey: "identifier",
+              apiName: "machine",
+              onlyOne: true,
+            }}
           />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextInput
-            multiline
-            name="description"
-            label="Descripcion"
-            formik={formik}
-          />
-        </Grid>
-        <Grid item xs={12} className={classes.subtitle}>
-          <Typography className={classes.label}>Prioridad</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <ChipSelector items={priorityList} onSelect={(e) => setPriority(e)} />
-        </Grid>
-        <Grid item xs={12} className={classes.subtitle}>
-          <Typography className={classes.label}>Maquina</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Box className={classes.chipContainer}>
-            {selectedMachines.map((el) => (
-              <Chip key={el.machineId} label={el.model} variant="outlined" />
-            ))}
-            <IconButton color="primary" onClick={() => setShowMachines(true)}>
-              <Add />
-            </IconButton>
-            <SearchAdd
-              visible={[showMachines, setShowMachines]}
-              selectedItems={[selectedMachines, setSelectedMachines]}
-              config={{
-                title: "maquina",
-                searchIn: machineList,
-                itemKey: "machineId",
-                textKey: "identifier",
-                onlyOne: true,
-                addLink: "/machines/add",
-                editLink: "/machines",
-              }}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Button color="primary" type="submit">
-            Enviar
-          </Button>
-        </Grid>
-      </Grid>
+        </Box>
+        {newRequest.isLoading && <LinearProgress sm={12} />}
+        <Button sm={12} color="primary" type="submit">
+          Enviar
+        </Button>
+      </GridView>
     </form>
   );
 };

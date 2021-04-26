@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "@reach/router";
 import { Delete } from "@material-ui/icons";
 
@@ -13,7 +13,7 @@ const UserModify = (props) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery(["getUser", props.id], () =>
+  const getUser = useQuery(["getUser", props.id], () =>
     fetchUserById(props.id)
   );
 
@@ -31,13 +31,14 @@ const UserModify = (props) => {
     },
   ]);
 
-  if (isLoading) return <Loading />;
+  if (getUser.isLoading) return <Loading />;
 
   const handleSubmit = (data) => {
+    console.log("handle submit", data);
     updateUser.mutate(data);
     navigate(-1);
   };
 
-  return <UserForm defaultValues={data} onFormSubmit={handleSubmit} />;
+  return <UserForm defaultValues={getUser.data} onFormSubmit={handleSubmit} />;
 };
 export default UserModify;

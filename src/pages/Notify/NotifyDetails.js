@@ -42,6 +42,7 @@ const NotifyDetails = () => {
           </Typography>
           <ChipSelector
             items={["Baja", "Media", "Alta"]}
+            selected={priority}
             onSelect={(e) => setPriority(e)}
           />
         </Grid>

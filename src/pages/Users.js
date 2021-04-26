@@ -47,7 +47,7 @@ const Users = () => {
           return (
             <ListItem
               button
-              onClick={() => navigate(`/users/${el.id}`)}
+              onClick={() => navigate(`/user/${el.id}`)}
               key={index}
             >
               <ListItemAvatar>
@@ -62,7 +62,7 @@ const Users = () => {
         color="primary"
         aria-label="add"
         className={classes.fab}
-        onClick={() => navigate("/users/add")}
+        onClick={() => navigate("/user/add")}
       >
         <PersonAdd />
       </Fab>

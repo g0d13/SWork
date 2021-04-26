@@ -8,11 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { useMatch, useNavigate } from "@reach/router";
-import {
-  ArrowBack,
-  Menu,
-  ExitToApp,
-} from "@material-ui/icons";
+import { ArrowBack, Menu, ExitToApp } from "@material-ui/icons";
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDrawer } from "../store/slices/ui";

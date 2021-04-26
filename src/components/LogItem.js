@@ -13,8 +13,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Edit, Delete } from "@material-ui/icons";
 import ConfirmDialog from "./ConfirmDialog";
 import { useDispatch } from "react-redux";
-import { deleteLog } from "../store/slices/logs";
+import { deleteLog } from "../api/logsAPI";
 import Permission from "./Permission";
+import { useAuth } from "../hooks/useAuth";
+import { useMutation, useQueryClient } from "react-query";
 
 const useStyles = makeStyles({
   chips: {
@@ -28,11 +30,19 @@ const LogItem = ({ log }) => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [openDialog, setOpenDialog] = useState();
-  const dispatch = useDispatch();
+  const userData = useAuth("user");
 
   const handleClickCard = () => {
-    navigate(`/log/request/${log.id}`);
+    if (JSON.parse(userData).role === "SUPERVISOR") {
+      navigate(`/log/request/${log.id}`);
+    }
   };
+  const queryClient = useQueryClient();
+
+  const onSuccess = () => queryClient.invalidateQueries("logs");
+  const deleteMutation = useMutation("logs", (id) => deleteLog(id), {
+    onSuccess,
+  });
 
   const handleClickEdit = (event) => {
     event.stopPropagation();
@@ -46,7 +56,7 @@ const LogItem = ({ log }) => {
 
   const handleClose = (value) => {
     if (value) {
-      dispatch(deleteLog(log.id));
+      deleteMutation.mutate(log.id);
     }
     setOpenDialog(false);
   };

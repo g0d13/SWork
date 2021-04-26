@@ -3,7 +3,6 @@ import { useNavigate } from "@reach/router";
 import { fetchLogById, putLogWithData } from "../../api/logsAPI";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import useUiTitle from "../../hooks/useUiTitle";
-
 import { CircularProgress } from "@material-ui/core";
 
 import LogForm from "./LogForm";
@@ -21,7 +20,7 @@ const LogUpdate = (props) => {
   const updateLog = useMutation("logs", putLogWithData, { onSuccess });
 
   const handleSubmit = (data) => {
-    updateLog.mutate(data);
+    updateLog.mutate({ id: props.id, ...data });
     navigate(-1);
   };
 

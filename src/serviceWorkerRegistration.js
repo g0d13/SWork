@@ -79,7 +79,7 @@ async function subscribeUser() {
           applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
         })
         .then(function (sub) {
-          console.log("Endpoint URL: ", sub.endpoint);
+          window.localStorage.setItem("sub", JSON.stringify(sub));
         })
         .catch(function (e) {
           if (Notification.permission === "denied") {

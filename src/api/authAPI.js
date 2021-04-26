@@ -10,13 +10,9 @@ const login = async (data) => {
   }
   const token = response.data.token;
   httpClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  localStorage.setItem("user", JSON.stringify(response.data));
+  window.localStorage.setItem("user", JSON.stringify(response.data));
+  window.location = "/home";
   return response.data;
 };
 
-const whoami = async () => {
-  const response = await httpClient.get("/api/auth/whoami");
-  return response.data;
-};
-
-export { login, whoami };
+export { login };

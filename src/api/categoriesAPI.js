@@ -15,7 +15,7 @@ const postCategory = async (data) => {
   return response.data;
 };
 
-const putCategorory = async (id, data) => {
+const putCategorory = async ({ id, ...data }) => {
   const response = await httpClient.put(`/api/category/${id}`, data);
   return response.data;
 };

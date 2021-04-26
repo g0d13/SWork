@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import useCr from "../utils/rolesValues";
+import { useAuth } from "../hooks/useAuth";
 
 const Permission = ({ children, permission, accept, reject }) => {
-  const { role } = JSON.parse(window.localStorage.getItem("user"));
-  const status = useCr(role, permission, accept, reject);
+  const user = useAuth("user");
+  const status = useCr(JSON.parse(user).role, permission, accept, reject);
 
   useEffect(() => {
     if (status >= 0) {

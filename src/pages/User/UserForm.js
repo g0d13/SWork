@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ChipSelector from "../../components/ChipSelector";
 import TextInput from "../../components/TextInput";
 import GridView from "../../components/GridView";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles({
   blockWidth: {
@@ -37,17 +38,16 @@ const validationSchema = yup.object({
     .required("el correo es necesario"),
   password: yup
     .string("Ingresa tu contrasenia")
-    .min(8, "La contrasena debe ser de 8 caracteres como minimo")
-    .required("La contrasena es requerida"),
+    .min(6, "Debe contener al menos  6 caracteres "),
 });
 
 const UserForm = ({ defaultValues, onFormSubmit, children }) => {
   const classes = useStyles();
-  const [role, setRole] = useState("Mechanic");
-
+  const [role, setRole] = useState(defaultValues.role ?? "MECHANIC");
   const formik = useFormik({
     initialValues: defaultValues,
     validationSchema: validationSchema,
+    validateOnBlur: true,
     onSubmit: (values) => onFormSubmit({ ...values, role }),
   });
 
@@ -70,10 +70,14 @@ const UserForm = ({ defaultValues, onFormSubmit, children }) => {
           Rol
         </Typography>
         <ChipSelector
-          items={["Mechanic", "Supervisor"]}
-          selected={defaultValues?.role ?? "Mechanic"}
+          items={[
+            { value: "MECHANIC", label: "Mecanico" },
+            { value: "SUPERVISOR", label: "Supervisor" },
+          ]}
+          selected={role}
           onSelect={setRole}
         />
+        {formik.isSubmitting && <LinearProgress />}
         <Button sm={12} color="primary" type="submit">
           Enviar
         </Button>

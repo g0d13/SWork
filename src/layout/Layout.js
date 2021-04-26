@@ -6,6 +6,7 @@ import Appbar from "./Appbar";
 import Drawer from "./Drawer";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Navigation from "./Navigation";
+import Permission from "../components/Permission";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -29,7 +30,9 @@ const Layout = (props) => {
       <ReactQueryDevtools initialIsOpen={false} />
       <Container className={classes.container}>{props.children}</Container>
       <Drawer />
-      <Navigation />
+      <Permission permission="home:read">
+        <Navigation />
+      </Permission>
     </ThemeProvider>
   );
 };
