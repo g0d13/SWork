@@ -1,65 +1,109 @@
 import React from "react";
-import { Button, Grid } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import TextInput from "../../components/TextInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import useUiTitle from "../../hooks/useUiTitle";
-import { useDispatch, useSelector } from "react-redux";
+import { useQuery, useQueryClient, useMutation } from "react-query";
+import GridView from "../../components/GridView";
 import {
+  fetchCategoryById,
   postCategory,
-  putCategory,
-  selectById,
-} from "../../store/slices/categories";
+  putCategorory,
+} from "../../api/categoriesAPI";
+import { CircularProgress } from "@material-ui/core";
 import { useNavigate } from "@reach/router";
 
 const validationSchema = yup.object({
-  name: yup.string().required("El nombre es requerido"),
-  details: yup.string(),
+  name: yup
+    .string()
+    .min(5, "Debe ser mayor a 5 caractereres")
+    .required("El nombre es requerido"),
+  details: yup
+    .string()
+    .min(5, "El campo debe ser mayor a 5 caracteres")
+    .required("El campo es requerido"),
 });
 
-const CategoryModify = (props) => {
-  const category = useSelector((state) => selectById(state, props.id));
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  useUiTitle(props.id ? "Editar categoria" : "Agregar categoria");
+const CategoryForm = ({ defaultValues, onFormSubmit }) => {
   const formik = useFormik({
-    initialValues: category || {
-      name: "",
-      details: "",
-    },
+    initialValues: defaultValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      if (props.id) {
-        dispatch(putCategory(values));
-      } else {
-        dispatch(postCategory(values));
-      }
-      navigate(-1);
+      onFormSubmit(values);
     },
   });
+
   return (
-    <React.Fragment>
-      <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextInput
-              name="name"
-              label="Nombre de la categoria"
-              formik={formik}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextInput name="details" label="Detalles" formik={formik} />
-          </Grid>
-          <Grid item xs={12}>
-            <Button color="primary" type="submit">
-              Enviar
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
-    </React.Fragment>
+    <form onSubmit={formik.handleSubmit}>
+      <GridView>
+        <TextInput name="name" label="Nombre de la categoria" formik={formik} />
+        <TextInput name="details" label="Detalles" formik={formik} />
+        <Button sm={12} color="primary" type="submit">
+          Enviar
+        </Button>
+      </GridView>
+    </form>
   );
 };
-export default CategoryModify;
+
+const CategoryCreate = () => {
+  const navigate = useNavigate();
+  useUiTitle("Agregar categoria");
+  const queryClient = useQueryClient();
+  const onSuccess = () => queryClient.invalidateQueries("categories");
+
+  const createCategory = useMutation(
+    "categories",
+    (data) => postCategory(data),
+    { onSuccess }
+  );
+  const handleSubmit = (data) => {
+    console.log(data);
+    createCategory.mutate(data);
+    navigate(-1);
+  };
+
+  return (
+    <CategoryForm
+      defaultValues={{ name: "", details: "" }}
+      onFormSubmit={handleSubmit}
+    />
+  );
+};
+
+const CategoryUpdate = (props) => {
+  useUiTitle("Editar bitacora");
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const onSuccess = () => queryClient.invalidateQueries("categories");
+  const categoryQuery = useQuery(
+    ["categories", props.id],
+    () => fetchCategoryById(props.id),
+    { onSuccess }
+  );
+
+  const updateCategory = useMutation(
+    "categories",
+    (data) => putCategorory(data),
+    {
+      onSuccess,
+    }
+  );
+
+  const handleSubmit = (data) => {
+    updateCategory.mutate({ id: props.id, ...data });
+    navigate(-1);
+  };
+
+  if (categoryQuery.isLoading) return <CircularProgress />;
+
+  return (
+    <CategoryForm
+      defaultValues={categoryQuery.data}
+      onFormSubmit={handleSubmit}
+    />
+  );
+};
+export { CategoryCreate, CategoryUpdate };
