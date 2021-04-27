@@ -122,7 +122,7 @@ const SearchAdd = (props) => {
         <List>
           <ListItem button>
             <ListItemText
-              onClick={() => navigate(`/${apiName}/add`)}
+              onClick={() => navigate(`log/${apiName}/add`)}
               className={classes.listText}
               primary={`Agregar ${title}`}
             />
@@ -136,7 +136,7 @@ const SearchAdd = (props) => {
               <ListItemSecondaryAction>
                 <IconButton
                   edge="end"
-                  onClick={() => navigate(`${apiName}/${el[itemKey]}`)}
+                  onClick={() => navigate(`log/${apiName}/${el[itemKey]}`)}
                 >
                   <Edit />
                 </IconButton>
