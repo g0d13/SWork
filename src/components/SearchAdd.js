@@ -136,7 +136,7 @@ const SearchAdd = (props) => {
               <ListItemSecondaryAction>
                 <IconButton
                   edge="end"
-                  onClick={() => navigate(`/log/${apiName}/${el[itemKey]}`)}
+                  onClick={() => navigate(`/${apiName}/${el[itemKey]}`)}
                 >
                   <Edit />
                 </IconButton>
