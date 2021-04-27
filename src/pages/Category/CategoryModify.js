@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import TextInput from "../../components/TextInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -13,6 +13,7 @@ import {
 } from "../../api/categoriesAPI";
 import { CircularProgress } from "@material-ui/core";
 import { useNavigate } from "@reach/router";
+import { Add } from "@material-ui/icons";
 
 const validationSchema = yup.object({
   name: yup
@@ -37,11 +38,13 @@ const CategoryForm = ({ defaultValues, onFormSubmit }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <GridView>
-        <TextInput name="name" label="Nombre de la categoria" formik={formik} />
+        <TextInput name="name" label="Nombre del tipo" formik={formik} />
         <TextInput name="details" label="Detalles" formik={formik} />
-        <Button sm={12} color="primary" type="submit">
-          Enviar
-        </Button>
+        <Box sm={12} display="flex" justifyContent="center">
+          <Button color="primary" type="submit" startIcon={<Add />}>
+            Agregar
+          </Button>
+        </Box>
       </GridView>
     </form>
   );
@@ -49,7 +52,7 @@ const CategoryForm = ({ defaultValues, onFormSubmit }) => {
 
 const CategoryCreate = () => {
   const navigate = useNavigate();
-  useUiTitle("Agregar categoria");
+  useUiTitle("Agregar tipo");
   const queryClient = useQueryClient();
   const onSuccess = () => queryClient.invalidateQueries("categories");
 
@@ -73,7 +76,7 @@ const CategoryCreate = () => {
 };
 
 const CategoryUpdate = (props) => {
-  useUiTitle("Editar bitacora");
+  useUiTitle("Editar tipo");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 

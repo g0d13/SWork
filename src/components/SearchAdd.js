@@ -3,17 +3,18 @@ import {
   Chip,
   DialogContent,
   DialogTitle,
+  Divider,
   Drawer,
   IconButton,
   List,
   ListItem,
+  ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { Close, Edit } from "@material-ui/icons";
+import { Close, Edit, Add } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect, useState } from "react";
 import { useNavigate } from "@reach/router";
@@ -59,7 +60,6 @@ const SearchAdd = (props) => {
 
   // local state to perform filtering
   const [items, setItems] = useState([]);
-  const [searchText, setSearchText] = useState("");
 
   const classes = useStyles();
   const navigate = useNavigate();
@@ -85,16 +85,16 @@ const SearchAdd = (props) => {
     setItems((prev) => [item, ...prev]);
     onSelect(selected.filter((e) => e[itemKey] !== item[itemKey]));
   };
-  // TODO: finish search element
-  const handleOnSearch = (element) => {};
+
   return (
-    <Drawer onClose={(v) => onClose(v)} anchor="bottom" open={open}>
+    <Drawer onClose={() => onClose(!open)} anchor="bottom" open={open}>
       <DialogTitle className={classes.displayTitle}>
         <Typography>Seleccionar {title}</Typography>
         <IconButton onClick={() => onClose(!open)}>
-          <Close />
+          <Close color="secondary" />
         </IconButton>
       </DialogTitle>
+      <Divider />
       <DialogContent className={classes.displayContent}>
         <Box className={classes.boxSelected}>
           {selected.map((el) => (
@@ -111,18 +111,15 @@ const SearchAdd = (props) => {
             Solo se puede seleccionar un {title}
           </Typography>
         )}
-        <TextField
-          fullWidth
-          value={searchText}
-          onChange={handleOnSearch}
-          label="Buscar"
-        />
       </DialogContent>
       <DialogContent>
         <List>
           <ListItem button>
+            <ListItemIcon>
+              <Add color="primary" />
+            </ListItemIcon>
             <ListItemText
-              onClick={() => navigate(`/log/${apiName}/add`)}
+              onClick={() => navigate(`/${apiName}/add`)}
               className={classes.listText}
               primary={`Agregar ${title}`}
             />
@@ -138,7 +135,7 @@ const SearchAdd = (props) => {
                   edge="end"
                   onClick={() => navigate(`/${apiName}/${el[itemKey]}`)}
                 >
-                  <Edit />
+                  <Edit color="primary" />
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>

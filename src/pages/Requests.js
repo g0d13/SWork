@@ -17,9 +17,15 @@ import useUiTitle from "../hooks/useUiTitle";
 import { AccessTime, Clear } from "@material-ui/icons";
 import { useNavigate } from "@reach/router";
 import useNotify from "../hooks/useNotify";
+import { priorityList } from "../utils/constats";
 
 const RepairItem = ({ repair }) => {
   const navigate = useNavigate();
+
+  const getPriotity = (val) => {
+    return priorityList.find((el) => el.value === val);
+  };
+
   return (
     <Card
       onClick={() => {
@@ -39,7 +45,7 @@ const RepairItem = ({ repair }) => {
             alignItems="center"
             justifyContent="space-between"
           >
-            <Chip label={repair.priority} color="primary" />
+            <Chip label={getPriotity(repair.priority).label} color="primary" />
             <IconButton>
               {repair.isFixed === false ? (
                 <Clear color="error" />

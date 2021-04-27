@@ -12,7 +12,6 @@ import { useNavigate } from "@reach/router";
 import { makeStyles } from "@material-ui/core/styles";
 import { Edit, Delete } from "@material-ui/icons";
 import ConfirmDialog from "./ConfirmDialog";
-import { useDispatch } from "react-redux";
 import { deleteLog } from "../api/logsAPI";
 import Permission from "./Permission";
 import { useAuth } from "../hooks/useAuth";
@@ -65,6 +64,7 @@ const LogItem = ({ log }) => {
     <React.Fragment>
       <Permission permission="log:update">
         <IconButton
+          color="primary"
           aria-label="settings"
           size="small"
           onClick={handleClickEdit}
@@ -74,6 +74,7 @@ const LogItem = ({ log }) => {
       </Permission>
       <Permission permission="log:delete">
         <IconButton
+          color="secondary"
           size="small"
           aria-label="delete"
           onClick={handleClickDelete}

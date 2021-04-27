@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import TextInput from "../../components/TextInput";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -7,6 +7,8 @@ import useUiTitle from "../../hooks/useUiTitle";
 import { postMachine, putMachine } from "../../store/slices/machines";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "@reach/router";
+import GridView from "../../components/GridView";
+import { Add } from "@material-ui/icons";
 
 const validationSchema = yup.object({
   identifier: yup.string().required("El nombre es requerido"),
@@ -38,26 +40,16 @@ const MachineModify = (props) => {
   return (
     <React.Fragment>
       <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextInput
-              name="identifier"
-              label="Identificador"
-              formik={formik}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextInput name="model" label="Modelo" formik={formik} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextInput name="brand" label="Marca" formik={formik} />
-          </Grid>
-          <Grid item xs={12}>
-            <Button color="primary" type="submit">
-              Enviar
+        <GridView>
+          <TextInput name="identifier" label="Identificador" formik={formik} />
+          <TextInput name="model" label="Modelo" formik={formik} />
+          <TextInput name="brand" label="Marca" formik={formik} />
+          <Box sm={12} display="flex" justifyContent="center">
+            <Button color="primary" type="submit" startIcon={<Add />}>
+              Agregar
             </Button>
-          </Grid>
-        </Grid>
+          </Box>
+        </GridView>
       </form>
     </React.Fragment>
   );

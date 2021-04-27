@@ -68,7 +68,7 @@ const LogForm = ({ defaultValues, onFormSubmit }) => {
         <TextInput name="name" label="Nombre" formik={formik} />
         <TextInput label="Detalles" name="details" formik={formik} />
         <Typography sm={12} color="textSecondary">
-          Categorias
+          Tipos
         </Typography>
         <Box sm={12} display="flex" gridGap="10px" alignItems="center">
           {selectedCategories[0].map((el) => (
@@ -78,7 +78,7 @@ const LogForm = ({ defaultValues, onFormSubmit }) => {
             <SearchAddWrapper
               show={showCategories}
               config={{
-                title: "categoria",
+                title: "tipo",
                 selectedItems: selectedCategories,
                 searchIn: categororiesQuery.data,
                 textKey: "name",

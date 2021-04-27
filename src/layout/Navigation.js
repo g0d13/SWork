@@ -3,10 +3,10 @@ import {
   BottomNavigationAction,
   makeStyles,
 } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { getLinks } from "./links";
-import { useNavigate } from "@reach/router";
+import { useNavigate, useLocation, useMatch } from "@reach/router";
 
 const useStyles = makeStyles((theme) => ({
   bottomNavigation: {
@@ -17,20 +17,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navigation = () => {
-  const [value, setValue] = useState();
   const classes = useStyles();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [value, setValue] = useState(location.pathname);
+  const match = useMatch("/:el");
+  const [show, setShow] = useState();
+
+  useEffect(() => {
+    setShow(!!match);
+  }, [match]);
 
   const userData = JSON.parse(window.localStorage.getItem("user"));
 
-  return (
+  return show ? (
     <BottomNavigation
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
       }}
-      className={classes.bottomNavigation}
       showLabels
+      className={classes.bottomNavigation}
     >
       {getLinks(userData?.role).map(({ title, key, icon, route }) => (
         <BottomNavigationAction
@@ -45,7 +52,7 @@ const Navigation = () => {
         />
       ))}
     </BottomNavigation>
-  );
+  ) : null;
 };
 
 export default Navigation;

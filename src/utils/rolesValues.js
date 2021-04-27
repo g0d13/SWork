@@ -24,7 +24,7 @@ const rolesPermissions = {
     category: "read",
     notify: "read:update",
     history: "",
-    home: "read",
+    home: "",
   },
   mechanic: {
     log: "repair",

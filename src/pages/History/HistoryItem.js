@@ -40,6 +40,7 @@ const GenerateRequestTimeline = ({ logId }) => {
   return logHistory.data.map((history) => (
     <React.Fragment>
       <GTimeLineItem
+        key={history.id}
         text={`Solicitud ${history.description}`}
         opposite={history.createdAt}
         icon={<Receipt />}

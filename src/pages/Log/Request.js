@@ -4,13 +4,7 @@ import { useQueryClient, useMutation, useQueries } from "react-query";
 import { useFormik } from "formik";
 import { useNavigate } from "@reach/router";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Box,
-  Button,
-  Chip,
-  LinearProgress,
-  Typography,
-} from "@material-ui/core";
+import { Box, Button, Chip, Typography } from "@material-ui/core";
 
 import ChipSelector from "../../components/ChipSelector";
 import useUiTitle from "../../hooks/useUiTitle";
@@ -23,6 +17,7 @@ import { fetchMachines } from "../../api/machinesAPI";
 import { fetchLogById } from "../../api/logsAPI";
 import { makeRequest } from "../../api/requestAPI";
 import { priorityList } from "../../utils/constats";
+import { Add } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   label: {
@@ -134,10 +129,11 @@ const Request = (props) => {
             }}
           />
         </Box>
-        {newRequest.isLoading && <LinearProgress sm={12} />}
-        <Button sm={12} color="primary" type="submit">
-          Enviar
-        </Button>
+        <Box display="flex" justifyContent="center">
+          <Button color="primary" type="submit" startIcon={<Add />}>
+            Agregar
+          </Button>
+        </Box>
       </GridView>
     </form>
   );

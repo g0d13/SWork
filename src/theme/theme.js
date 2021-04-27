@@ -1,15 +1,14 @@
-import { amber } from "@material-ui/core/colors";
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 // A custom theme for this app
 const lightMuiTheme = createMuiTheme({
   type: "light",
   palette: {
     primary: {
-      main: "#757de8",
+      main: "#4caf50",
+      contrastText: "#FFF",
     },
     secondary: {
-      main: amber[500],
-      light: "#feefc3",
+      main: "#f50057",
     },
     error: {
       main: "#f44336",
@@ -23,7 +22,7 @@ const lightMuiTheme = createMuiTheme({
     },
     background: {
       default: "#FFF",
-      highlight: "#F1F3F4",
+      highlight: "#FFF",
     },
   },
 });

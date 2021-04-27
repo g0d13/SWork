@@ -52,7 +52,7 @@ const Drawer = () => {
       <Divider />
       <Box width={275}>
         <List>
-          {getLinks(userData?.role).map(
+          {getLinks(JSON.parse(userData).role).map(
             ({ route, key, title, icon, permission }) => (
               <ListItem key={key} button onClick={() => navigateTo(route)}>
                 <ListItemIcon>{icon}</ListItemIcon>

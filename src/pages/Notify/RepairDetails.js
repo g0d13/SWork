@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import {
+  Box,
   FormControlLabel,
   FormGroup,
   Switch,
@@ -17,6 +18,7 @@ import { priorityList } from "../../utils/constats";
 import { useMutation, useQueryClient } from "react-query";
 import { postRepair } from "../../api/requestAPI";
 import { useNavigate } from "@reach/router";
+import { Add } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   maxWidth: {
@@ -109,9 +111,11 @@ const RepairDetails = (props) => {
             label="Se pudo reparar"
           />
         </FormGroup>
-        <Button sm={12} color="primary" type="submit">
-          Enviar
-        </Button>
+        <Box sm={12} display="flex" justifyContent="center">
+          <Button color="primary" type="submit" startIcon={<Add />}>
+            Agregar
+          </Button>
+        </Box>
       </GridView>
     </form>
   );

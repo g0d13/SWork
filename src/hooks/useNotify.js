@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
 
 const NEW_NOTIFICATION_EVENT = "notify";
@@ -15,7 +15,7 @@ function notifyMe(text) {
   // Let's check whether notification permissions have already been granted
   else if (Notification.permission === "granted") {
     // If it's okay let's create a notification
-    var notification = new Notification(text);
+    new Notification(text);
   }
 
   // Otherwise, we need to ask the user for permission

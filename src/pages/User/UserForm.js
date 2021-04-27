@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ChipSelector from "../../components/ChipSelector";
 import TextInput from "../../components/TextInput";
 import GridView from "../../components/GridView";
-import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles({
   blockWidth: {
@@ -77,10 +76,11 @@ const UserForm = ({ defaultValues, onFormSubmit, children }) => {
           selected={role}
           onSelect={setRole}
         />
-        {formik.isSubmitting && <LinearProgress />}
-        <Button sm={12} color="primary" type="submit">
-          Enviar
-        </Button>
+        <Box sm={12} display="flex" justifyContent="center">
+          <Button color="primary" type="submit">
+            Guardar
+          </Button>
+        </Box>
       </GridView>
     </form>
   );

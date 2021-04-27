@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Layout from "../layout/Layout";
-import Logs from "../pages/Logs";
 import Users from "../pages/Users";
 import Login from "../pages/Login";
 import LogUpdate from "../pages/Log/LogUpdate";
@@ -27,10 +26,6 @@ import Home from "../pages/Home";
 const Routes = () => {
   const userData = useAuth("user");
 
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
-
   return (
     <React.Fragment>
       <Router>
@@ -54,8 +49,8 @@ const Routes = () => {
             <MachineModify path="/machine/add" />
             <MachineModify path="/machine/:id" />
 
-            <CategoryCreate path="log/category/add" />
-            <CategoryUpdate path="log/category/:id" />
+            <CategoryCreate path="/category/add" />
+            <CategoryUpdate path="/category/:id" />
 
             <Notifications path="/notifications" />
             <NotifyDetails path="/notify/:id" />

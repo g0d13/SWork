@@ -12,7 +12,6 @@ import { ArrowBack, Menu, ExitToApp } from "@material-ui/icons";
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDrawer } from "../store/slices/ui";
-import Permission from "../components/Permission";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {

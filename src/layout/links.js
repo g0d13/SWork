@@ -28,18 +28,7 @@ export const getLinks = (role) => {
         permission: "history:read",
       },
     ];
-  } else if (role?.toLowerCase() === "supervisor") {
-    return [baseRoute];
   } else {
-    return [
-      baseRoute,
-      {
-        title: "Notificaciones",
-        icon: <History />,
-        route: "/notifications",
-        key: "5",
-        permission: "notify:read",
-      },
-    ];
+    return [baseRoute];
   }
 };
