@@ -45,8 +45,8 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "jdpm0699@gmail.com",
-      password: "jdpm0699",
+      email: "",
+      password: "",
     },
     validationSchema: validationSchema,
     onSubmit: (data) => loginMutation.mutate(data),
