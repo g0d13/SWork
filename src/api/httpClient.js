@@ -1,10 +1,7 @@
 import axios from "axios";
 
-if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-  axios.defaults.baseURL = "http://localhost:3030";
-} else {
-  axios.defaults.baseURL = "https://nodeswork.herokuapp.com";
-}
+axios.defaults.baseURL = process.env.SERVER_URL;
+
 const getToken = () => {
   const user = JSON.parse(window.localStorage.getItem("user"));
   if (user == null) {

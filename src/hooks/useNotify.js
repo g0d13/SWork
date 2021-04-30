@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
 
 const NEW_NOTIFICATION_EVENT = "notify";
-const SOCKET_SERVER_URL = "https://nodeswork.herokuapp.com";
+const SOCKET_SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const userData = JSON.parse(window.localStorage.getItem("user"));
 
