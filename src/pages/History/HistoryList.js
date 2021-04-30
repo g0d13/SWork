@@ -21,9 +21,16 @@ const LogItemView = ({ log }) => {
         component="div"
         onClick={() => navigate(`/history/${log.id}`)}
       >
-        <CardHeader title={log.name} subheader={`Creado: ${log.createdAt}`} />
+        <CardHeader
+          title={log.name}
+          subheader={`Creado: ${new Date(log.createdAt).toDateString()}`}
+        />
         <CardContent>
-          {log.deletedAt && <Typography>Eliminado: {log.deletedAt}</Typography>}
+          {log.deletedAt && (
+            <Typography>
+              Eliminado: {new Date(log.deletedAt).toDateString()}
+            </Typography>
+          )}
         </CardContent>
       </CardActionArea>
     </Card>

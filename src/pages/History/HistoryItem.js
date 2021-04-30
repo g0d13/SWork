@@ -42,13 +42,13 @@ const GenerateRequestTimeline = ({ logId }) => {
       <GTimeLineItem
         key={history.id}
         text={`Solicitud ${history.description}`}
-        opposite={history.createdAt}
+        opposite={new Date(history.createdAt).toDateString()}
         icon={<Receipt />}
       />
       {history.repair && (
         <GTimeLineItem
           text={`Reparada ${history.repair.id}`}
-          opposite={history.repair.createdAt}
+          opposite={new Date(history.repair.createdAt).toDateString()}
         />
       )}
     </React.Fragment>
@@ -70,7 +70,7 @@ const HistoryItem = ({ id }) => {
       <Timeline align="alternate">
         <GTimeLineItem
           text={`Bitacora ${logQuery.data.name}`}
-          opposite={logQuery.data.createdAt}
+          opposite={new Date(logQuery.data.createdAt).toDateString()}
           icon={<Check />}
         />
         <GenerateRequestTimeline logId={id} />
